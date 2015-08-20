@@ -2,8 +2,8 @@ import numpy as np
 import random
 
 def Value(closePrices,dates):
-    
-    return [0,0]
+    output = [0,0]
+    return output,dict(zip(dates[:len(output)], output))
 
 def Score(closePrices,dates):
     MACDScore = []
@@ -13,4 +13,4 @@ def Score(closePrices,dates):
         else:
             MACDScore.append(0)
         
-    return MACDScore
+    return MACDScore,dict(zip(dates[:len(MACDScore)], MACDScore))
