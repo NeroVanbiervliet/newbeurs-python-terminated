@@ -63,4 +63,4 @@ for i in range(len(totalBuyList)):
 
 print np.mean(gain)
 print 'total Simulation time: ',time.time()-tStart
-print 'And Now His Watch is Ended' 
+print 'And Now His Watch Has Ended' 
