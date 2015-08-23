@@ -13,12 +13,12 @@ cur = conn.cursor()
 #	"password_hashed varchar(100),"
 #	"PRIMARY KEY (id));")
 
-#query = ("CREATE TABLE stocks("
-#	"id int NOT NULL AUTO_INCREMENT,"
-#	"name varchar(30) NOT NULL,"
-#	"ticker varchar(10) UNIQUE,"
-#	"market varchar(20),"
-#	"PRIMARY KEY (id));")
+query = ("CREATE TABLE stocks("
+	"id int NOT NULL AUTO_INCREMENT,"
+	"name varchar(30) NOT NULL,"
+	"ticker varchar(10) UNIQUE,"
+	"market varchar(20),"
+	"PRIMARY KEY (id));")
 
 #query = ("INSERT INTO users(name, password_hashed) "
 #	"VALUES ('nero','h4shc0de');")

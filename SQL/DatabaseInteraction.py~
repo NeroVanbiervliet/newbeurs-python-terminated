@@ -121,5 +121,6 @@ class DatabaseInteraction:
 			# add to dictionary, gaat er van uit dat ticker uniek is dus enkel eerste rij van queryResult wordt onderzocht
 			result[columnNames[i][0]] = queryResult[0][i]
 
-		return result
+		print str(columnNames)
+		print str(queryResult)
 

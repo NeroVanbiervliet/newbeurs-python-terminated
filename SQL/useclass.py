@@ -11,3 +11,8 @@ for item in queryResult:
 print '------------------------'
 dbObject.getTableNames()
 
+#dbObject.addStock("apple","BLUB","Nasdaq")
+tickerList = dbObject.getTickerList()
+print str(tickerList)
+stockInfo = dbObject.getStockInfo("AAPL")
+print str(stockInfo)
