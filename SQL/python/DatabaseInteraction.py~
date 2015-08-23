@@ -14,12 +14,12 @@ class DatabaseInteraction:
 	def __init__(self, dbUser = None):
 		
 		# variables declared in the constructor are property of the object
-		self.dbName = 'oakTest'
-		self.dbHost = 'localhost'
+		self.dbName = "oakTest"
+		self.dbHost = "localhost"
 
 		if(dbUser is None): # default account is root TODO aanpassen
 			# local var needed further in constructor
-			dbUser = 'root'
+			dbUser = "root"
 			self.dbUser = dbUser
 		else:
 			self.dbUser = dbUser
