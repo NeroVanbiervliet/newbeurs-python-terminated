@@ -16,7 +16,7 @@ def main(date,stockDataDict,tickerList):
     if stockDataDict == {}:
         # Alle data creeren voor de geselecteerde aandelen
         firstTime = 1
-        for ticker in tickerList:
+        for ticker in tickerList[:100]:
             stockDataDict[ticker] = stock(ticker)
             stock.generateMACD(stockDataDict[ticker])
 

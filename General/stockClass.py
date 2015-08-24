@@ -7,6 +7,7 @@ import mainMACD as MACD
 class stock:
 
     def __init__(self,ticker):
+	# TODO add sql
         self.name = ticker
         self.dataPath = '../data/stockPrices/' + ticker + '.txt'
         self.market = 'lol'
