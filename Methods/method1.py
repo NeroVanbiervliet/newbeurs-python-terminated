@@ -1,7 +1,7 @@
 import numpy as np
 import sys
 sys.path.insert(0, '../General')
-from stockClass import stock
+from stockClass import Stock
 
 
 def main(date,stockDataDict,tickerList):
@@ -11,26 +11,27 @@ def main(date,stockDataDict,tickerList):
         """
     
     buyList = []
-    #buyList = [[ticker,price,date,duration]]
+    #buyList = [[ticker,price,date,duration,score]]
     firstTime = 0
     if stockDataDict == {}:
         # Alle data creeren voor de geselecteerde aandelen
         firstTime = 1
         for ticker in tickerList:
-            stockDataDict[ticker] = stock(ticker)
-            stock.generateMACD(stockDataDict[ticker])
+            stockDataDict[ticker] = Stock(ticker)
+            Stock.generateMACD(stockDataDict[ticker])
 
     # Alle aandelen overlopen 
     for ticker in stockDataDict:
         #check if data is available for that date
         allDates = stockDataDict[ticker].dates
-        if date in allDates:
+        if date in allDates and date in allDates[:len(stockDataDict[ticker].MACDScorei)]:
             # Voorwaarde om te kopen en toevoegen aan de buyList
-            if stockDataDict[ticker].MACDScoreiDict[date] > 0:
+            if stockDataDict[ticker].MACDScoreiDict[date] > 25:
+               score = stockDataDict[ticker].MACDScoreiDict[date]
                price = stockDataDict[ticker].closePricesDict[date]
                #date = stockDataDict[ticker].dates[entry]
                duration = 6
-               buyList.append([ticker,price,date,duration])
+               buyList.append([ticker,price,date,duration,score])
 
     ## to reduce the data package that has to be transferred       
     if firstTime == 1:

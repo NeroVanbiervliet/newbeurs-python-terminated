@@ -3,20 +3,24 @@ import numpy as np
 import time
 import sys
 sys.path.insert(0, '../General')
-from stockClass import stock
+from stockClass import Stock
 sys.path.insert(0, '../Methods')
 
 ## Inputs
-startDate = date(2015, 7, 10)
-endDate = date(2014, 7, 10)
+startDate = date(2014, 7, 10)
+endDate = date(2015, 7, 10)
 methodString = 'method1'
 stockSelection = 'S%P500'
+comment = 'Test met werkende MACD, MACDScore > 25, duration 6 dagen'
 
 # import correct method
 exec('import ' + methodString + ' as method')
 
+if startDate > endDate:
+    print 'start date is bigger than end date, not possible'
+
 # generate dateList to iterate over
-delta = startDate - endDate 
+delta = endDate - startDate 
 dateList = []
 for i in range(delta.days + 1):
     date = startDate + td(days=i)
@@ -56,14 +60,14 @@ for i in range(len(totalBuyList)):
         duration = totalBuyList[i][j][3]
         dates = stockDataDict[ticker].dates
         index = np.where(dates==buyDate)[0][0]
-        sellDate = dates[index+duration]
+        sellDate = dates[index-duration]
         sellPrice = stockDataDict[ticker].closePricesDict[sellDate]
         totalBuyList[i][j].append(sellPrice)
         totalBuyList[i][j].append(sellDate)
         gain = (sellPrice - buyPrice)/buyPrice
         gainList.append(gain)
         
-#totalBuyList = [[[ticker,price,date,duration,sellPrice,sellDate]]]
+#totalBuyList = [[[ticker,buyprice,buydate,duration,score,sellPrice,sellDate]]]
 
 # Part 3: Make all plots
 
@@ -79,6 +83,8 @@ market = 'S%P500'
 f = open('../data/simLog/sim' + number + '.txt','w+')
 f.write('Method: ')
 f.write(methodString)
+f.write('\n' + 'Comment: ')
+f.write(comment)
 f.write('\n' + 'Start date: ')
 f.write(str(startDate))
 f.write('\n' + 'End date: ')
@@ -86,13 +92,19 @@ f.write(str(endDate))
 f.write('\n' + 'Stock Selection: ')
 f.write(str(stockSelection))
 f.write('\n' + 'Average gain (%): ')
-f.write(str(np.mean(gain*100.)))
+f.write(str(np.mean(gainList)*100.))
 f.write('\n' + 'Amount of orders: ')
 f.write(str(amountOfOrders))
 f.close()
 
-#todo: voeg nog andere info toe, zoals op welke markt de simulatie is gedaan etc..
+f = open('../data/simLog/sim' + number + 'transactions' + '.txt','w+')
+f.write('ticker,buyprice,buydate,duration,score,sellprice,selldate')
+for i in range(len(totalBuyList)):
+    for j in range(len(totalBuyList[i])):
+        f.write('\n' + str(totalBuyList[i][j]))
 
-print np.mean(gain)
+#todo: voeg nog andere info toe, zoals op welke markt de simulatie is gedaan, transactiekosten, hoeveel de markt zelf is gestegen etc..
+
+print np.mean(gainList)
 print 'total Simulation time: ',time.time()-tStart
 print 'And Now His Watch is Ended' 
