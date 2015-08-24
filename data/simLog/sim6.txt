@@ -1,0 +1,6 @@
+Method: method1
+Start date: 2015-07-10
+End date: 2014-07-10
+Stock Selection: S%P500
+Average gain (%): 1.09669807441
+Amount of orders: 277

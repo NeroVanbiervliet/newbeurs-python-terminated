@@ -9,10 +9,11 @@ sys.path.insert(0, '../Methods')
 ## Inputs
 startDate = date(2015, 7, 10)
 endDate = date(2014, 7, 10)
-method = 'method1'
+methodString = 'method1'
+stockSelection = 'S%P500'
 
 # import correct method
-exec('import ' + method + ' as method')
+exec('import ' + methodString + ' as method')
 
 # generate dateList to iterate over
 delta = startDate - endDate 
@@ -22,7 +23,8 @@ for i in range(delta.days + 1):
     dateList.append(str(date))
 
 # Inladen van alle tickers
-tickerList = np.loadtxt('../data/tickerOverview.txt', delimiter=',', skiprows=0, usecols=(0,), unpack=False,dtype = 'str')[:100]
+tickerList = np.loadtxt('../data/tickerOverview.txt', delimiter=',', skiprows=0, usecols=(0,), unpack=False,dtype = 'str')
+##todo, moet nog via stockSelection
 
 ## Start simulation ##
 tStart = time.time()
@@ -43,9 +45,11 @@ for date in dateList:
 # Part 2: calculate gains from the period
 #totalBuyList = [[[ticker,price,date,duration]]]
 gainList = []
+amountOfOrders = 0
 #iterate all buy signals
 for i in range(len(totalBuyList)):
     for j in range(len(totalBuyList[i])):
+        amountOfOrders += 1
         ticker = totalBuyList[i][j][0]
         buyPrice = totalBuyList[i][j][1]
         buyDate = totalBuyList[i][j][2]
@@ -60,6 +64,34 @@ for i in range(len(totalBuyList)):
         gainList.append(gain)
         
 #totalBuyList = [[[ticker,price,date,duration,sellPrice,sellDate]]]
+
+# Part 3: Make all plots
+
+# Part 4: Make log file
+f = open('../data/simLog/simNumber.txt','r')
+number  = f.read()
+f.close()
+f = open('../data/simLog/simNumber.txt','w+')
+f.write(str(int(number)+1))
+f.close()
+
+market = 'S%P500'
+f = open('../data/simLog/sim' + number + '.txt','w+')
+f.write('Method: ')
+f.write(methodString)
+f.write('\n' + 'Start date: ')
+f.write(str(startDate))
+f.write('\n' + 'End date: ')
+f.write(str(endDate))
+f.write('\n' + 'Stock Selection: ')
+f.write(str(stockSelection))
+f.write('\n' + 'Average gain (%): ')
+f.write(str(np.mean(gain*100.)))
+f.write('\n' + 'Amount of orders: ')
+f.write(str(amountOfOrders))
+f.close()
+
+#todo: voeg nog andere info toe, zoals op welke markt de simulatie is gedaan etc..
 
 print np.mean(gain)
 print 'total Simulation time: ',time.time()-tStart

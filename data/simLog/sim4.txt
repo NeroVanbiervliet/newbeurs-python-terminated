@@ -1,0 +1,5 @@
+Method: method1
+Start date: 2015-07-10
+End date: 2014-07-10
+Average gain (%): -1.21852757033
+Amount of orders: 268
