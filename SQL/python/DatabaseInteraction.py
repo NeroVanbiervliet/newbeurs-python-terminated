@@ -17,7 +17,7 @@ class DatabaseInteraction:
 		self.dbName = 'oakTest'
 		self.dbHost = 'localhost'
 
-		if(dbUser is None): # default account is root TODO aanpassen
+		if(dbUser is None): # default account is root NEED aanpassen
 			# local var needed further in constructor
 			dbUser = 'root'
 			self.dbUser = dbUser
