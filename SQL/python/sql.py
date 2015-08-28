@@ -6,20 +6,6 @@ conn = MySQLdb.connect(host="localhost", user="root", passwd="lnrddvnc", db="oak
 # cursor object
 cur = conn.cursor() 
 
-# query
-#query = ("CREATE TABLE users("
-#	"id int NOT NULL AUTO_INCREMENT,"
-#	"name varchar(30) NOT NULL,"
-#	"password_hashed varchar(100),"
-#	"PRIMARY KEY (id));")
-
-#query = ("CREATE TABLE stocks("
-#	"id int NOT NULL AUTO_INCREMENT,"
-#	"name varchar(30) NOT NULL,"
-#	"ticker varchar(10) UNIQUE,"
-#	"market varchar(20),"
-#	"PRIMARY KEY (id));")
-
 #query = ("INSERT INTO users(name, password_hashed) "
 #	"VALUES ('nero','h4shc0de');")
 

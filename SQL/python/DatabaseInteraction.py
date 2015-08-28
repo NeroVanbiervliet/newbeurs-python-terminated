@@ -11,10 +11,10 @@ class DatabaseInteraction:
 
 	# constructor
 
-	def __init__(self, dbUser = None):
+	def __init__(self, dbName, dbUser = None):
 		
 		# variables declared in the constructor are property of the object
-		self.dbName = 'oakTest'
+		self.dbName = dbName
 		self.dbHost = 'localhost'
 
 		if(dbUser is None): # default account is root NEED aanpassen
@@ -34,6 +34,10 @@ class DatabaseInteraction:
 
 
 	# functions
+
+	# returns the mandatory last print statement of every method 
+	def getTerminator(self):
+		return "And Now His Watch is Ended"
 
 	# returns an array of all valid table names
 	def getTableNames(self):
@@ -84,20 +88,20 @@ class DatabaseInteraction:
 	# market = Nasdaq
 	def addStock(self, name, ticker, market):
 		
-		query = ("INSERT INTO stocks(name, ticker, market) "
+		query = ("INSERT INTO stock(name, ticker, market) "
 			"VALUES (\'%s\',\'%s\',\'%s\');") % (name,ticker,market)
 		
 		try:	
 			self.executeQuery(query)
 		except _mysql_exceptions.IntegrityError:
-			print "OAK_ERROR: Ticker bestaat al in database"
-			# exception herthrowen	TODO: goed dat programma failed door error? 		
+			print "OAK_ERROR: Creatie van nieuwe stock in de database mislukt. Ticker bestaat al in database"
+			# exception herthrowen TODO eigen exception throwen met message hierboven? 	
 			raise
 	
 	# returns a list containing all tickers present in the stocks table	
 	def getTickerList(self):
 		
-		query = "SELECT ticker FROM stocks"
+		query = "SELECT ticker FROM stock"
 		[columnNames,queryResult] = self.executeQuery(query)
 		
 		# gegevens herschikken
@@ -110,7 +114,7 @@ class DatabaseInteraction:
 	# returns stock info in a dictionary
 	def getStockInfo(self, ticker):
 
-		query = "SELECT * FROM stocks WHERE ticker=\'%s\'" % (ticker)
+		query = "SELECT * FROM stock WHERE ticker=\'%s\'" % (ticker)
 		[columnNames,queryResult] = self.executeQuery(query)
 
 		# data in dictionary gieten
@@ -122,4 +126,19 @@ class DatabaseInteraction:
 			result[columnNames[i][0]] = queryResult[0][i]
 
 		return result
+
+	# adds a method to the database
+	# @param name de naam van de methode, zelfde als directorynaam van methode!
+	# @param description beschrijving van de methode, inclusief de argumenten die mee moeten gegeven worden bij uitvoeren van script!
+	def addMethod(self, name, description):
+		
+		query = ("INSERT INTO method(name, description) "
+			"VALUES (\'%s\',\'%s\');") % (name,description)
+
+		try:	
+			self.executeQuery(query)
+		except _mysql_exceptions.IntegrityError:
+			print "OAK_ERROR: Creatie van nieuwe stock in de database mislukt. Methodenaam bestaat al in database"
+			# exception herthrowen TODO eigen exception throwen met message hierboven
+			raise
 

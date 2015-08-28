@@ -5,7 +5,7 @@ import sys
 
 # choose from {end_develop,backtest_develop,end_real,backtest_real}
 # corresponding backup database will also be resetted
-dataBaseToReset = "end_real";
+dataBaseToReset = "backtest_real";
 
 # if you are about to reset a non-develop database, please enter the password below 
 # AND CLEAR PASSWORD AGAIN BEFORE SAVING THE SCRIPT AFTER LAST USE
@@ -118,11 +118,15 @@ if dataBaseToReset == "backtest_develop" or dataBaseToReset == "backtest_real":
 		"name varchar(30) NOT NULL UNIQUE,"
 		"description varchar(60) NOT NULL DEFAULT '',"
 		"owner int NOT NULL,"
+		"strategy int NOT NULL,"
 		"timestampStart TIMESTAMP NOT NULL DEFAULT NOW(),"
 		"timestampEnd TIMESTAMP," # er kan maar 1 fiel zijn met als default NOW()
 		"totalGain float NOT NULL,"
 		"totalReturn float NOT NULL," # return is een reserved word in SQL
 		"status varchar(8) NOT NULL,"
+		"PID int,"
+		"progress int NOT NULL DEFAULT 0,"
+		"FOREIGN KEY (strategy) REFERENCES strategy(id),"
 		"FOREIGN KEY (owner) REFERENCES user(id),"
 		"PRIMARY KEY (id));")
 

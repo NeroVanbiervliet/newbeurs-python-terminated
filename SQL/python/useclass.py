@@ -1,8 +1,8 @@
 #!/usr/bin/python
 from DatabaseInteraction import DatabaseInteraction
 
-dbObject = DatabaseInteraction()
-[columnNames,queryResult] = dbObject.getAllTableEntries("users")
+dbObject = DatabaseInteraction('backtest_real')
+[columnNames,queryResult] = dbObject.getAllTableEntries("user")
 for item in columnNames:
 	print item[0]
 
@@ -11,8 +11,10 @@ for item in queryResult:
 print '------------------------'
 dbObject.getTableNames()
 
+#dbObject.addMethod("fundamentalist","geen argumenten jongeuh")
 #dbObject.addStock("apple","BLUB","Nasdaq")
 tickerList = dbObject.getTickerList()
 print str(tickerList)
-stockInfo = dbObject.getStockInfo("AAPL")
+stockInfo = dbObject.getStockInfo("BLUB")
 print str(stockInfo)
+
