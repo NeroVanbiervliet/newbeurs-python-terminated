@@ -13,6 +13,7 @@ methodString = 'method1'
 stockSelection = 'S%P500'
 comment = 'Test met werkende MACD, MACDScore > 25, duration 6 dagen'
 
+transactionCost = 0.0075*2.
 # import correct method
 exec('import ' + methodString + ' as method')
 
@@ -33,45 +34,38 @@ tickerList = np.loadtxt('../data/tickerOverview.txt', delimiter=',', skiprows=0,
 ## Start simulation ##
 tStart = time.time()
 
-# Part 1: gather all the buy signals
+# Part 1: Gather all the buy signals
 totalBuyList = []
 counter = 0
 for date in dateList:
     buyList = []
     counter += 1
     if counter == 1:
-        buyList,stockDataDict = method.main(date,{},tickerList)
+        buyList,stockDataDict = method.mainBuy(date,{},tickerList)
     else:
-        buyList = method.main(date,stockDataDict,tickerList)
+        buyList = method.mainBuy(date,stockDataDict,tickerList)
         
     totalBuyList.append(buyList)
 
-# Part 2: calculate gains from the period
+# Part 2: Gather sell signals
+#TODO
+transactionList = method.mainSell(stockDataDict,totalBuyList)
+#transactionList = [[[ticker,buyprice,buydate,duration,score,sellPrice,sellDate]]]
+
+# Part 3: calculate gains from the period
 #totalBuyList = [[[ticker,price,date,duration]]]
 gainList = []
 amountOfOrders = 0
 #iterate all buy signals
-for i in range(len(totalBuyList)):
-    for j in range(len(totalBuyList[i])):
-        amountOfOrders += 1
-        ticker = totalBuyList[i][j][0]
-        buyPrice = totalBuyList[i][j][1]
-        buyDate = totalBuyList[i][j][2]
-        duration = totalBuyList[i][j][3]
-        dates = stockDataDict[ticker].dates
-        index = np.where(dates==buyDate)[0][0]
-        sellDate = dates[index-duration]
-        sellPrice = stockDataDict[ticker].closePricesDict[sellDate]
-        totalBuyList[i][j].append(sellPrice)
-        totalBuyList[i][j].append(sellDate)
-        gain = (sellPrice - buyPrice)/buyPrice
-        gainList.append(gain)
+for i in range(len(transactionList)):
+
+    gain = (transactionList[i][5] - transactionList[i][1] - transactionCost)/transactionList[i][1]
         
-#totalBuyList = [[[ticker,buyprice,buydate,duration,score,sellPrice,sellDate]]]
+    gainList.append(gain)
+        
+# Part 4: Make all plots
 
-# Part 3: Make all plots
-
-# Part 4: Make log file
+# Part 5: Make log file
 f = open('../data/simLog/simNumber.txt','r')
 number  = f.read()
 f.close()
