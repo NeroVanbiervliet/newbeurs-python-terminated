@@ -12,6 +12,8 @@ endDate = date(2015, 7, 10)
 methodString = 'method1'
 stockSelection = 'S%P500'
 comment = 'Test met werkende MACD, MACDScore > 25, duration 6 dagen'
+buyParameters = [25,6]
+sellParameters = []
 
 transactionCost = 0.0075*2.
 # import correct method
@@ -41,15 +43,15 @@ for date in dateList:
     buyList = []
     counter += 1
     if counter == 1:
-        buyList,stockDataDict = method.mainBuy(date,{},tickerList)
+        buyList,stockDataDict = method.mainBuy(date,{},tickerList,buyParameters)
     else:
-        buyList = method.mainBuy(date,stockDataDict,tickerList)
+        buyList = method.mainBuy(date,stockDataDict,tickerList,buyParameters)
         
     totalBuyList.append(buyList)
 
-# Part 2: Gather sell signals
+# Part 2: Gather sell signals and complete transactionlist
 #TODO
-transactionList = method.mainSell(stockDataDict,totalBuyList)
+transactionList = method.mainSell(stockDataDict,totalBuyList,sellParameters)
 #transactionList = [[[ticker,buyprice,buydate,duration,score,sellPrice,sellDate]]]
 
 # Part 3: calculate gains from the period
@@ -93,9 +95,9 @@ f.close()
 
 f = open('../data/simLog/sim' + number + 'transactions' + '.txt','w+')
 f.write('ticker,buyprice,buydate,duration,score,sellprice,selldate')
-for i in range(len(totalBuyList)):
-    for j in range(len(totalBuyList[i])):
-        f.write('\n' + str(totalBuyList[i][j]))
+for i in range(len(transactionList)):
+    
+    f.write('\n' + str(transactionList[i]))
 
 #todo: voeg nog andere info toe, zoals op welke markt de simulatie is gedaan, transactiekosten, hoeveel de markt zelf is gestegen etc..
 

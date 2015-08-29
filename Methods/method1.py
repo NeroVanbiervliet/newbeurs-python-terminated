@@ -4,11 +4,15 @@ sys.path.insert(0, '../General')
 from stockClass import Stock
 
 
-def mainBuy(date,stockDataDict,tickerList):
+def mainBuy(date,stockDataDict,tickerList,parameters):
     """ Dit is methode 1 die aandelen koopt en verkoopt onder bepaalde voorwaardes
         Input: date = welke dag geanalyseerd moet worden
+               parameters = [limitscore voor MACD,duration]
         Output: buyList = zegt welke aandelen gekocht worden en voor hoe lang
         """
+
+    limitScore = parameters[0]
+    duration = parameters[1]
     
     buyList = []
     #buyList = [[ticker,price,date,duration,score]]
@@ -28,11 +32,10 @@ def mainBuy(date,stockDataDict,tickerList):
 
             ## HIER Methode inserten
             # Voorwaarde om te kopen en toevoegen aan de buyList
-            if stockDataDict[ticker].MACDScoreiDict[date] > 25:
+            if stockDataDict[ticker].MACDScoreiDict[date] > limitScore:
                score = stockDataDict[ticker].MACDScoreiDict[date]
                price = stockDataDict[ticker].closePricesDict[date]
                #date = stockDataDict[ticker].dates[entry]
-               duration = 6
                buyList.append([ticker,price,date,duration,score])
 
 
@@ -44,7 +47,7 @@ def mainBuy(date,stockDataDict,tickerList):
         return buyList
 
 
-def mainSell(stockDataDict,buyList):
+def mainSell(stockDataDict,buyList,parameters):
     
     transactionList = []
     
