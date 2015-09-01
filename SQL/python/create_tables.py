@@ -119,10 +119,10 @@ if dataBaseToReset == "backtest_develop" or dataBaseToReset == "backtest_real":
 		"description varchar(60) NOT NULL DEFAULT '',"
 		"owner int NOT NULL,"
 		"strategy int NOT NULL,"
-		"timestampStart TIMESTAMP NOT NULL DEFAULT NOW(),"
-		"timestampEnd TIMESTAMP," # er kan maar 1 fiel zijn met als default NOW()
-		"totalGain float NOT NULL,"
-		"totalReturn float NOT NULL," # return is een reserved word in SQL
+		"timestampStart TIMESTAMP NOT NULL DEFAULT NOW()," # TODO ook datetime maken? en ook checken voor de rest van script
+		"timestampEnd DATETIME," # er kan maar 1 fiel zijn met als default NOW()
+		"totalGain float,"
+		"totalReturn float," # return is een reserved word in SQL
 		"status varchar(8) NOT NULL,"
 		"PID int,"
 		"progress int NOT NULL DEFAULT 0,"
