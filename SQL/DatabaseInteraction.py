@@ -18,7 +18,7 @@ class DatabaseInteraction:
         self.dbName = dbName
         self.dbHost = 'localhost'
 
-        if (dbUser is None):  # default account is root NEED aanpassen
+        if (dbUser is None):  # default account is root NEED aanpassen -> python
             # local var needed further in constructor
             dbUser = 'root'
             self.dbUser = dbUser
@@ -191,3 +191,12 @@ class DatabaseInteraction:
             print "OAK_ERROR: Creatie van nieuwe strategy in de database mislukt. StrategyName bestaat al in database"
             # exception herthrowen TODO eigen exception throwen met message hierboven
             raise
+
+    # adds given PID to a simulation record
+    def addPidToSimulation(self, simulationId, simulationPid):
+
+        query = ("UPDATE simulation "
+                 "SET pid=%s "
+                 "WHERE id=%s;") % (simulationPid,simulationId)
+
+        print query;

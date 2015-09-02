@@ -1,0 +1,30 @@
+#@params
+#$1=method name, $2=method args, $3=simulation id
+
+#cd't naar de locatie van dit script
+cd "$(dirname "$0")"
+
+#python script uitvoeren (geen dubbele quotes rond $2 want het zijn de parameters van dit script en ze moeten dus spaties hebben!)
+#path opstellen voor output
+outpath=$outpath"output/"
+outpath=$outpath$3
+outpath=$outpath".raw"
+#path opstellen voor method script
+scriptpath="../Methods/"$1
+scriptpath=$scriptpath".py"
+#method runnen met args van de strategy en output redirecten naar .raw file, &=subprocess, niet wachten op einde
+python $scriptpath $5 > $outpath 2>&1 &
+
+pid=$!
+
+# script uitvoeren
+#dubbele quotes zetten rond alle parameters die uit meerdere woorden bestaan
+#en door spaties gescheiden zijn
+python add_pid_to_simulation.py $3 $pid &
+
+#watcher vasthangen aan pid
+#NEED remove volgende twee lijnen comment
+#>/dev/null 2>&1 dient om de output van het background process te discarden (weg te schrijven naar een file die niets voorstelt)
+#want de php exec functie wacht tot alle output beschikbaar is alvorens exec te beindigen
+bash watch_process $pid $3 >/dev/null 2>&1 &
+

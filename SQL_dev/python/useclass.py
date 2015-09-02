@@ -15,6 +15,7 @@ dbObject.getTableNames()
 #dbObject.addStock("apple","BLUB","Nasdaq")
 tickerList = dbObject.getTickerList()
 print str(tickerList)
-stockInfo = dbObject.getStockInfo("BLUB")
+stockInfo = dbObject.getStockInfo("OAK")
 print str(stockInfo)
 
+dbObject.addPidToSimulation(1,3)

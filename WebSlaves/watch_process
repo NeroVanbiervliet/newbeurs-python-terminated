@@ -1,0 +1,42 @@
+#@params
+#$1=pid, $2=simulation id
+
+#cd't naar de locatie van dit script
+cd "$(dirname "$0")"
+
+maxsleeptime=400
+#initial sleeptime is 1 second
+sleeptime=1
+
+while [ true ]
+do	
+	sleep $sleeptime
+	sleeptime="$(($sleeptime * 2))"
+	#gt betekent greater than
+	if [ "$sleeptime" -gt "$maxsleeptime" ]
+	then
+		sleeptime=$maxsleeptime
+	fi
+
+	processName=$(ps -p $1 -o comm= 2>&1)
+
+	if [[ $processName != "python" ]]
+	then
+		break	
+	fi	
+done
+
+#check raw output file for last line
+path="output/"$2".raw"
+lastLine=$(tail -n1 $path 2>&1)
+
+if [[ $lastLine == "And Now His Watch is Ended" ]]
+then
+	python finish_simulation.py $2 done
+else
+	python finish_simulation.py $2 failed
+fi
+
+
+
+
