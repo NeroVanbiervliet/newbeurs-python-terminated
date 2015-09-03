@@ -1,0 +1,9 @@
+Method: method1
+Comment: Test met werkende MACD, MACDScore >3, duration 6, lowerlimit sell: -0.1, upperlimit sell: 0.1
+Start date: 2010-07-10
+End date: 2015-07-10
+Stock Selection: S%P500
+Average gain (%): 0.419465286741
+Total gain (%): 105742.596823
+Market gain (%): 129.72897651
+Amount of orders: 2262

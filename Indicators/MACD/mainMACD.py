@@ -1,10 +1,10 @@
 import numpy as np
 import random
 
-def Value(closePrices):
+def Value(closePrices,period1,period2):
 
-    period1 = 12
-    period2 = 26
+    #period1 = 12
+    #period2 = 26
     
     MACD = []
     EMA12 = EMA(closePrices,12)
@@ -15,20 +15,43 @@ def Value(closePrices):
     
     return MACD
 
-def Score(MACD,closePrices):
+def Score(MACD,closePrices,period3):
 
     scoreList = []
-    signal = SignalLine(MACD)
+    signal = SignalLine(MACD,period3)
     
+    score = 0
+    diffPrev = 0
+    cross = 0
     for i in range(len(signal)):
-        scoreList.append((MACD[i] - signal[i])/closePrices[i]*1000.)
+        j = (len(signal)-1) - i
+
+        diff = MACD[j] - signal[j]
+
+        if cross == 2:
+            cross = 0
+            score += diff
         
-    return scoreList
+        if cross == 1:
+            score += diff
+            cross += 1
 
-def SignalLine(MACD):
+        if diff*diffPrev < 0:
+            score = diff
+            cross = 1
+            
+        if cross == 0:
+            score = 0
+        
+        diffPrev = diff
+        scoreList.append(score*8.)
+        
+    return scoreList[::-1]
 
-    period = 9
-    signalLine = EMA(MACD,period)
+def SignalLine(MACD,period3):
+
+    #period3 = 9
+    signalLine = EMA(MACD,period3)
 
     return signalLine
 
