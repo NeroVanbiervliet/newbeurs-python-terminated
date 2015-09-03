@@ -7,8 +7,8 @@ class DatabaseInteraction:
     """A class to interact with the oak beurs database (c) Nero"""
 
     # variables here declared are class variables, they are common for all objects and each object has a pointer to the same value!
-    userList = ['root', 'baerto', 'beurs']
-    passwordList = ['lnrddvnc', 'baertdbpass', 'fromzerotoone']
+    userList = ['root','webapp']
+    passwordList = ['lnrddvnc','frmzrtn5894rndm']
 
     # constructor
 
@@ -199,4 +199,23 @@ class DatabaseInteraction:
                  "SET pid=%s "
                  "WHERE id=%s;") % (simulationPid,simulationId)
 
-        print query;
+        try:
+            self.executeQuery(query)
+        except _mysql_exceptions:
+            print "OAK_ERROR: PID toevoegen aan simulation in de database mislukt. Waarschijnlijk bestaat het sim id niet in de db"
+            # exception herthrowen TODO eigen exception throwen met message hierboven
+            raise
+
+    #
+    def finaliseSimulation(self,simulationId,status):
+
+        query = ("UPDATE simulation "
+                 "SET status=%s "
+                 "WHERE id=%s;") % (status,simulationId)
+
+        try:
+            self.executeQuery(query)
+        except _mysql_exceptions:
+            print "OAK_ERROR: status updaten van de simulation in de database mislukt. Waarschijnlijk bestaat het sim id niet in de db"
+            # exception herthrowen TODO eigen exception throwen met message hierboven
+            raise

@@ -5,7 +5,6 @@ from ..SQL.DatabaseInteraction import DatabaseInteraction
 simulationId = argv[1]
 pid = argv[2]
 
-# NEED veranderen dat webapp user is, of webslaves
-dbInt = DatabaseInteraction('backtest_real')
+dbInt = DatabaseInteraction('backtest_real','webapp')
 
 dbInt.addPidToSimulation(self, simulationId, pid)

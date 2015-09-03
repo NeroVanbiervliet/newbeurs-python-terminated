@@ -2,7 +2,7 @@
 from DatabaseInteraction import DatabaseInteraction
 
 dbObject = DatabaseInteraction('backtest_real')
-[columnNames,queryResult] = dbObject.getAllTableEntries("user")
+[columnNames,queryResult] = dbObject.getAllTableEntries("strategy")
 for item in columnNames:
 	print item[0]
 

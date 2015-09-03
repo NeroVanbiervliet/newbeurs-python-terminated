@@ -7,8 +7,8 @@ class DatabaseInteraction:
     """A class to interact with the oak beurs database (c) Nero"""
 
     # variables here declared are class variables, they are common for all objects and each object has a pointer to the same value!
-    userList = ['root', 'baerto', 'beurs']
-    passwordList = ['lnrddvnc', 'baertdbpass', 'fromzerotoone']
+    userList = ['root','webapp']
+    passwordList = ['lnrddvnc','frmzrtn5894rndm']
 
     # constructor
 
@@ -58,6 +58,9 @@ class DatabaseInteraction:
         return self.executeQuery(query)
 
     # executes a given query
+    # sample structuur van dataRows:
+    # ((1L, 'fundamentAgressief', 1L, 1, ''), (2L, 'bel20volger', 2L, 1, 'bel20'))
+    # is dus list van lists, geen dictionaries
     def executeQuery(self, query):
 
         # open connection with database
@@ -196,7 +199,34 @@ class DatabaseInteraction:
     def addPidToSimulation(self, simulationId, simulationPid):
 
         query = ("UPDATE simulation "
-                 "SET pid=%s "
+                 "SET pid='%s' "
                  "WHERE id=%s;") % (simulationPid,simulationId)
 
-        print query;
+        try:
+            self.executeQuery(query)
+        except _mysql_exceptions:
+            print "OAK_ERROR: PID toevoegen aan simulation in de database mislukt. Waarschijnlijk bestaat het sim id niet in de db"
+            # exception herthrowen TODO eigen exception throwen met message hierboven
+            raise
+
+    #
+    def finaliseSimulation(self,simulationId,status,totalGain,totalReturn):
+
+        # checken of de status niet al stopped is
+        [columnNames, dataRows] = self.getAllTableEntries("simulation");
+        for dataRow in dataRows:
+            if dataRow[0] == simulationId: # juiste rij gevonden
+                if dataRow[9] == "stopped": # NEED testen of dit wel klopt, index 9 niet 100% zeker
+                    status = "stopped";
+                break
+
+        query = ("UPDATE simulation "
+                 "SET status='%s', totalGain='%s', totalReturn='%s'"
+                 "WHERE id='%s';") % (status,totalGain,totalReturn,simulationId)
+
+        try:
+            self.executeQuery(query)
+        except _mysql_exceptions:
+            print "OAK_ERROR: status updaten van de simulation in de database mislukt. Waarschijnlijk bestaat het sim id niet in de db"
+            # exception herthrowen TODO eigen exception throwen met message hierboven
+            raise
