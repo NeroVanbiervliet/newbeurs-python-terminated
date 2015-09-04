@@ -21,7 +21,7 @@ class Stock:
             self.dates = np.loadtxt(self.dataPath, delimiter=',', skiprows=1, usecols=(0,), unpack=False,dtype = 'str')
             # Normal lists
             # close price adjusted is used
-            self.lengthLimit = 4000
+            self.lengthLimit = 2000
             self.openPrices = dummy[:,0][:self.lengthLimit]
             self.highPrices = dummy[:,1][:self.lengthLimit]
             self.lowPrices = dummy[:,2][:self.lengthLimit]

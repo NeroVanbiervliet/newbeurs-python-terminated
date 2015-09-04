@@ -46,6 +46,11 @@ def mainBuy(date,stockDataDict,tickerList,parameters):
     else:
         return buyList
 
+def mainSell():
+
+    #TODO: voeg een sell definitie toe die in real life wordt gebruikt
+    
+    return 'lol'
 
 def mainSellSim(stockDataDict,buyList,parameters):
     

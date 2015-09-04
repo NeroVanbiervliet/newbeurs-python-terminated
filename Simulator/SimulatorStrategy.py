@@ -4,24 +4,25 @@ import time
 import sys
 sys.path.insert(0, '../General')
 from stockClass import Stock
-sys.path.insert(0, '../Methods')
+sys.path.insert(0, '../Strategy')
+
 
 ## Inputs
-startDate = date(2010, 1, 4)
+startDate = date(2014, 1, 4)
 endDate = date(2015, 7, 10)
-methodString = 'method1'
+strategyString = 'strategy1'
 stockSelection = 'S%P500'
-buyParameters = [3,6]
-sellParameters = [-0.1,0.1,-0.1]
-
-comment = 'Test met werkende MACD, MACDScore >' + str(buyParameters[0]) + \
-', duration ' + str(buyParameters[1]) + ', lowerlimit sell: ' + str(sellParameters[0]) + \
-', upperlimit sell: ' + str(sellParameters[1])
+#buyParameters = [3,6]
+#sellParameters = [-0.1,0.1,-0.1]
+comment = 'test met strategy implementation'
+#comment = 'Test met werkende MACD, MACDScore >' + str(buyParameters[0]) + \
+#', duration ' + str(buyParameters[1]) + ', lowerlimit sell: ' + str(sellParameters[0]) + \
+#', upperlimit sell: ' + str(sellParameters[1])
 
 print comment
 transactionCost = 0.0075*2.
 # import correct method
-exec('import ' + methodString + ' as method')
+exec('import ' + strategyString + ' as strategy')
 
 if startDate > endDate:
     print 'start date is bigger than end date, not possible'
@@ -45,16 +46,14 @@ totalBuyList = []
 stockDataDict = {}
 for date in dateList:
     buyList = []
-    if stockDataDict == {}:
-        buyList,stockDataDict = method.mainBuy(date,{},tickerList,buyParameters)
-    else:
-        buyList = method.mainBuy(date,stockDataDict,tickerList,buyParameters)
+    
+    buyList,stockDataDict = strategy.mainBuy(date,stockDataDict,tickerList)
         
     totalBuyList.append(buyList)
 
 # Part 2: Gather sell signals and complete transactionlist
 #TODO
-transactionList = method.mainSellSim(stockDataDict,totalBuyList,sellParameters)
+transactionList = strategy.mainSellSim(stockDataDict,totalBuyList)
 #transactionList = [[ticker,buyprice,buydate,duration,score,sellPrice,sellDate]]
 
 # Part 3: calculate gains from the period
@@ -63,7 +62,7 @@ gainList = []
 amountOfOrders = 0
 totalGain = 1.00
 amountOfOrders = len(transactionList)
-n = (int(amountOfOrders/len(dateList))+1)*buyParameters[1]
+n = (int(amountOfOrders/len(dateList))+1)*6.
 totalGainReal = np.ones(n)
 #iterate all buy signals
 for i in range(len(transactionList)):
@@ -109,8 +108,8 @@ f.close()
 
 market = 'S%P500'
 f = open('../data/simLog/sim' + number + '.txt','w+')
-f.write('Method: ')
-f.write(methodString)
+f.write('Strategy: ')
+f.write(strategyString)
 f.write('\n' + 'Comment: ')
 f.write(comment)
 f.write('\n' + 'Start date: ')

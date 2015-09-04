@@ -4,7 +4,7 @@ sys.path.insert(0, '../General')
 from stockClass import Stock
 
 ## Input ##
-ticker = 'AMZN'
+ticker = 'AAPL'
 start = 200
 end = 400
 
