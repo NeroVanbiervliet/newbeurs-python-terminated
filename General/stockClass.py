@@ -18,10 +18,10 @@ class Stock:
         #load price data from txt file
         if os.path.isfile(self.dataPath):
             dummy = np.loadtxt(self.dataPath, delimiter=',', skiprows=1, usecols=(1,2,3,4,5,6), unpack=False)
-            self.dates = np.loadtxt(self.dataPath, delimiter=',', skiprows=1, usecols=(0,), unpack=False,dtype = 'str')
+            self.lengthLimit = 2000
+            self.dates = np.loadtxt(self.dataPath, delimiter=',', skiprows=1, usecols=(0,), unpack=False,dtype = 'str')[:self.lengthLimit]
             # Normal lists
             # close price adjusted is used
-            self.lengthLimit = 2000
             self.openPrices = dummy[:,0][:self.lengthLimit]
             self.highPrices = dummy[:,1][:self.lengthLimit]
             self.lowPrices = dummy[:,2][:self.lengthLimit]

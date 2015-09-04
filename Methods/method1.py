@@ -4,15 +4,15 @@ sys.path.insert(0, '../General')
 from stockClass import Stock
 
 
-def mainBuy(date,stockDataDict,tickerList,parameters):
+def mainBuy(date,stockDataDict,tickerList,buyParameters):
     """ Dit is methode 1 die aandelen koopt en verkoopt onder bepaalde voorwaardes
         Input: date = welke dag geanalyseerd moet worden
                parameters = [limitscore voor MACD,duration]
         Output: buyList = zegt welke aandelen gekocht worden en voor hoe lang
         """
 
-    limitScore = parameters[0]
-    duration = parameters[1]
+    limitScore = buyParameters[0]
+    duration = buyParameters[1]
     
     buyList = []
     #buyList = [[ticker,price,date,duration,score]]
@@ -46,11 +46,32 @@ def mainBuy(date,stockDataDict,tickerList,parameters):
     else:
         return buyList
 
-def mainSell():
+def mainSell(date,stockDataDict,tickerList,sellParameters,portfolio):
 
+    transactionListDummy = []
+    i = 0
     #TODO: voeg een sell definitie toe die in real life wordt gebruikt
-    
-    return 'lol'
+    while i < len(portfolio):
+        ticker = portfolio[i][0]
+        buyPrice = portfolio[i][1]
+        buyDate = portfolio[i][2]
+        duration = portfolio[i][3]
+        allDates = stockDataDict[ticker].dates
+        
+        ##Selldate en sellprice hier
+        if date in allDates:
+            index1 = np.where(allDates==buyDate)[0][0]
+            index2 = np.where(allDates==date)[0][0]
+            if (index1 - index2) >= duration:
+                sellDate = date
+                sellPrice = stockDataDict[ticker].closePricesDict[sellDate]
+                transactionListDummy.append([ticker,buyPrice,buyDate,duration,portfolio[i][4],sellPrice,sellDate])
+                portfolio.pop(i)
+                i += -1
+                
+        i += 1
+        
+    return transactionListDummy,portfolio
 
 def mainSellSim(stockDataDict,buyList,parameters):
     
