@@ -14,6 +14,10 @@ dbObject.addUser("beurs","$2a$12$rBOjgBqaorleheA2XuospuN65sO5XsUUHddygO4z8Hcd2eI
 dbObject.addStock("apple","AAPL","Nasdaq")
 dbObject.addStock("oak","OAK","Euronext")
 
+# stockCategory
+dbObject.addStockToCategory("OAK","locatie","lieven zijn bureau")
+dbObject.addStockToCategory("AAPL","locatie","amerika")
+
 # methods
 dbObject.addMethod("fundamentalist","geen argumenten jongeuh")
 dbObject.addMethod("indexvolger","geef als string de index mee die je wil volgen")
@@ -22,6 +26,7 @@ dbObject.addMethod("indexvolger","geef als string de index mee die je wil volgen
 
 dbObject.addStrategy("fundamentAgressief","fundamentalist","")
 dbObject.addStrategy("bel20volger","indexvolger","bel20")
+
 
 # simulation
 

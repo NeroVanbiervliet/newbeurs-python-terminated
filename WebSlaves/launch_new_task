@@ -1,19 +1,25 @@
+#!/bin/bash
 #@params
 #$1=method name, $2=method args, $3=simulation id
 
 #cd't naar de locatie van dit script
 cd "$(dirname "$0")"
 
-#python script uitvoeren (geen dubbele quotes rond $2 want het zijn de parameters van dit script en ze moeten dus spaties hebben!)
+echo blrol > testfile
+
+#python script uitvoeren
 #path opstellen voor output
 outpath=$outpath"output/"
 outpath=$outpath$3
 outpath=$outpath".raw"
 #path opstellen voor method script
-scriptpath="../Methods/"$1
-scriptpath=$scriptpath".py"
-#method runnen met args van de strategy en output redirecten naar .raw file, &=subprocess, niet wachten op einde
-python $scriptpath $5 > $outpath 2>&1 &
+#NEED moet Simulator.py worden
+simulatorPath="../Simulator/nerotest.py"
+#simulator runnen met args van de strategy en output redirecten naar .raw file, &=subprocess, niet wachten op einde
+#double quotes rond $2 is omdat $2 een string is die spaties bevat, en anders zou hij dat zien als allemaal aparte argumenten
+#TODO begin en einddatum toevoegen waartussen moet gesimuleerd worden
+#TODO filter voor welke groep aandelen op gesimuleerd moet worden toevoegen
+python $simulatorPath $1 "$2" > $outpath 2>&1 &
 
 pid=$!
 

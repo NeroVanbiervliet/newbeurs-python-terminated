@@ -100,8 +100,21 @@ class DatabaseInteraction:
             # exception herthrowen TODO eigen exception throwen met message hierboven?
             raise
 
+    # adds a stock to a category
+    def addStockToCategory(self,ticker,criterium,value):
+
+        query = ("INSERT INTO stockCategory(stock,criterium,value) "
+                 "VALUES ((SELECT id FROM stock WHERE ticker=\'%s\'),\'%s\',\'%s\');") % (ticker,criterium,value)
+
+        try:
+            self.executeQuery(query)
+        except _mysql_exceptions.IntegrityError:
+            print "OAK_ERROR: Creatie van nieuwe stockCategory entry in de database mislukt. Mogelijk probleem: ticker bestaat niet in database"
+            # exception herthrowen TODO eigen exception throwen met message hierboven?
+            raise
+
     # returns a list containing all tickers present in the stocks table
-    def getTickerList(self):
+    def getAllTickers(self):
 
         query = "SELECT ticker FROM stock"
         [columnNames, queryResult] = self.executeQuery(query)
@@ -112,6 +125,24 @@ class DatabaseInteraction:
             result.append(ticker[0])
 
         return result
+
+    # returns a list of tickers
+    # the stocks moeten aan de condition voldoen
+    # de condition wordt beschreven aan de hand van entries in de stockCategory table
+    def getTickerList(self,condition):
+
+        # NEED welke join?
+        query = ("SELECT ticker FROM stock JOIN stockCategory ON stock.id = stockCategory.stock "
+                 "WHERE %s;") % (condition)
+
+        print query
+
+        try:
+            return self.executeQuery(query)
+        except _mysql_exceptions.IntegrityError:
+            print "OAK_ERROR: Mogelijk probleem: geen idee"
+            # exception herthrowen TODO eigen exception throwen met message hierboven?
+            raise
 
     # returns stock info in a dictionary
     def getStockInfo(self, ticker):
