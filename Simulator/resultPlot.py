@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-name = 'sim64'
+name = 'sim68'
 lol = []
 f = open('../data/simLog/' + name + 'transactions.txt','r')
 for line in f:

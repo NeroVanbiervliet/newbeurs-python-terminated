@@ -3,6 +3,13 @@ import sys
 sys.path.insert(0, '../General')
 from stockClass import Stock
 
+def generateData(tickerList):
+    stockDataDict = {}
+    for ticker in tickerList:
+            stockDataDict[ticker] = Stock(ticker)
+            Stock.generateMACD(stockDataDict[ticker])
+            
+    return stockDataDict
 
 def mainBuy(date,stockDataDict,tickerList,buyParameters):
     """ Dit is methode 1 die aandelen koopt en verkoopt onder bepaalde voorwaardes
@@ -15,15 +22,7 @@ def mainBuy(date,stockDataDict,tickerList,buyParameters):
     duration = buyParameters[1]
     
     buyList = []
-    #buyList = [[ticker,price,date,duration,score]]
-    firstTime = 0
-    if stockDataDict == {}:
-        # Alle data creeren voor de geselecteerde aandelen
-        firstTime = 1
-        for ticker in tickerList:
-            stockDataDict[ticker] = Stock(ticker)
-            Stock.generateMACD(stockDataDict[ticker])
-
+    
     # Alle aandelen overlopen 
     for ticker in stockDataDict:
         #check if data is available for that date
@@ -38,20 +37,14 @@ def mainBuy(date,stockDataDict,tickerList,buyParameters):
                #date = stockDataDict[ticker].dates[entry]
                buyList.append([ticker,price,date,duration,score])
 
-
-    
-    ## to reduce the data package that has to be transferred       
-    if firstTime == 1:
-        return buyList,stockDataDict
-    else:
-        return buyList
+    return buyList
 
 def mainSell(date,stockDataDict,tickerList,sellParameters,portfolio):
 
-    transactionListDummy = []
-    i = 0
+    transactionList = []
+    indices = []
     #TODO: voeg een sell definitie toe die in real life wordt gebruikt
-    while i < len(portfolio):
+    for i in range(len(portfolio)):
         ticker = portfolio[i][0]
         buyPrice = portfolio[i][1]
         buyDate = portfolio[i][2]
@@ -65,13 +58,10 @@ def mainSell(date,stockDataDict,tickerList,sellParameters,portfolio):
             if (index1 - index2) >= duration:
                 sellDate = date
                 sellPrice = stockDataDict[ticker].closePricesDict[sellDate]
-                transactionListDummy.append([ticker,buyPrice,buyDate,duration,portfolio[i][4],sellPrice,sellDate])
-                portfolio.pop(i)
-                i += -1
-                
-        i += 1
-        
-    return transactionListDummy,portfolio
+                transactionList.append([ticker,buyPrice,buyDate,duration,portfolio[i][4],sellPrice,sellDate])
+                indices.append(i)
+                   
+    return transactionList,indices
 
 def mainSellSim(stockDataDict,buyList,parameters):
     

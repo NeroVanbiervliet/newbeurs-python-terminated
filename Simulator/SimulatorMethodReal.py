@@ -6,13 +6,24 @@ sys.path.insert(0, '../General')
 from stockClass import Stock
 sys.path.insert(0, '../Methods')
 
+
 ## Inputs
-startDate = date(2014, 1, 4)
-endDate = date(2015, 7, 10)
-methodString = 'method1'
-stockSelection = 'S%P500'
-buyParameters = [3,6]
-sellParameters = []
+if 'argv' in locals():
+    startDate = argv[0]
+    endDate = argv[1]
+    methodString = argv[2]
+    stockSelection = argv[3]
+    buyParameters = argv[4]
+    sellParameters = argv[5]
+    ID = argv[6]
+else:
+    startDate = date(2012, 9, 4)
+    endDate = date(2015, 7, 10)
+    methodString = 'method1'
+    stockSelection = 'S%P500'
+    buyParameters = [3,6]
+    sellParameters = []
+    
 
 comment = 'Nieuwe simulator test'
 
@@ -41,23 +52,22 @@ tStart = time.time()
 
 portfolio = []
 #money = 10000. 
-stockDataDict = {}
+stockDataDict = method.generateData(tickerList)
 transactionList = []
+
 # Iterate all days
 for date in dateList:
 
     ## Part 1: buy signals
     buyList = []
-    if stockDataDict == {}:
-        buyList,stockDataDict = method.mainBuy(date,{},tickerList,buyParameters)
-    else:
-        buyList = method.mainBuy(date,stockDataDict,tickerList,buyParameters)
+    buyList = method.mainBuy(date,stockDataDict,tickerList,buyParameters)
 
-    
     portfolio += buyList
     
     # Part 2: sell signals
-    transactionListDummy,portfolio = method.mainSell(date,stockDataDict,tickerList,sellParameters,portfolio)
+    transactionListDummy,indices = method.mainSell(date,stockDataDict,tickerList,sellParameters,portfolio)
+    for i in range(len(indices)):
+        portfolio.pop(indices[i]-i)
 
     transactionList += transactionListDummy
     
@@ -104,12 +114,16 @@ marketGain = (sellMarketPrice - buyMarketPrice)/buyMarketPrice
 # Part 5: Make all plots
 
 # Part 6: Make log file
-f = open('../data/simLog/simNumber.txt','r')
-number  = f.read()
-f.close()
-f = open('../data/simLog/simNumber.txt','w+')
-f.write(str(int(number)+1))
-f.close()
+if 'argv' in locals():
+    number = ID
+
+else:
+    f = open('../data/simLog/simNumber.txt','r')
+    number  = f.read()
+    f.close()
+    f = open('../data/simLog/simNumber.txt','w+')
+    f.write(str(int(number)+1))
+    f.close()
 
 market = 'S%P500'
 f = open('../data/simLog/sim' + number + '.txt','w+')

@@ -1,0 +1,10 @@
+Method: method1
+Comment: Nieuwe simulator test
+Start date: 2006-01-04
+End date: 2009-07-10
+Stock Selection: S%P500
+Average gain (%): 0.276866440493
+Total gain (%): 0.276866440493
+Total gain Real (%): 0.0461444067488
+Market gain (%): -26.780145853
+Amount of orders: 1
