@@ -4,33 +4,25 @@ import time
 import sys
 sys.path.insert(0, '../General')
 from stockClass import Stock
-sys.path.insert(0, '../Methods')
+sys.path.insert(0, '../Strategy')
 
 
 ## Inputs
-if 'argv' in locals():
-    startDate = argv[0]
-    endDate = argv[1]
-    methodString = argv[2]
-    stockSelection = argv[3]
-    buyParameters = argv[4]
-    sellParameters = argv[5]
-    ID = argv[6]
-else:
-    startDate = date(2012, 9, 4)
-    endDate = date(2015, 7, 10)
-    methodString = 'method1'
-    stockSelection = 'S%P500'
-    buyParameters = [3,6]
-    sellParameters = []
-    
-
-comment = 'Nieuwe simulator test'
+startDate = date(2014, 1, 4)
+endDate = date(2015, 7, 10)
+strategyString = 'strategy1'
+stockSelection = 'S%P500'
+#buyParameters = [3,6]
+#sellParameters = [-0.1,0.1,-0.1]
+comment = 'test met strategy implementation'
+#comment = 'Test met werkende MACD, MACDScore >' + str(buyParameters[0]) + \
+#', duration ' + str(buyParameters[1]) + ', lowerlimit sell: ' + str(sellParameters[0]) + \
+#', upperlimit sell: ' + str(sellParameters[1])
 
 print comment
 transactionCost = 0.0075*2.
 # import correct method
-exec('import ' + methodString + ' as method')
+exec('import ' + strategyString + ' as strategy')
 
 if startDate > endDate:
     print 'start date is bigger than end date, not possible'
@@ -49,28 +41,21 @@ tickerList = np.loadtxt('../data/tickerOverview.txt', delimiter=',', skiprows=0,
 ## Start simulation ##
 tStart = time.time()
 
-
-portfolio = []
-#money = 10000. 
-stockDataDict = method.generateData(tickerList)
-transactionList = []
-
-# Iterate all days
+# Part 1: Gather all the buy signals
+totalBuyList = []
+stockDataDict = {}
 for date in dateList:
-
-    ## Part 1: buy signals
     buyList = []
-    buyList = method.mainBuy(date,stockDataDict,tickerList,buyParameters)
-
-    portfolio += buyList
     
-    # Part 2: sell signals
-    transactionListDummy,indices = method.mainSell(date,stockDataDict,tickerList,sellParameters,portfolio)
-    for i in range(len(indices)):
-        portfolio.pop(indices[i]-i)
+    buyList,stockDataDict = strategy.mainBuy(date,stockDataDict,tickerList)
+        
+    totalBuyList.append(buyList)
 
-    transactionList += transactionListDummy
-    
+# Part 2: Gather sell signals and complete transactionlist
+#TODO
+transactionList = strategy.mainSellSim(stockDataDict,totalBuyList)
+#transactionList = [[ticker,buyprice,buydate,duration,score,sellPrice,sellDate]]
+
 # Part 3: calculate gains from the period
 #totalBuyList = [[[ticker,price,date,duration]]]
 gainList = []
@@ -114,21 +99,17 @@ marketGain = (sellMarketPrice - buyMarketPrice)/buyMarketPrice
 # Part 5: Make all plots
 
 # Part 6: Make log file
-if 'argv' in locals():
-    number = ID
-
-else:
-    f = open('../data/simLog/simNumber.txt','r')
-    number  = f.read()
-    f.close()
-    f = open('../data/simLog/simNumber.txt','w+')
-    f.write(str(int(number)+1))
-    f.close()
+f = open('../data/simLog/simNumber.txt','r')
+number  = f.read()
+f.close()
+f = open('../data/simLog/simNumber.txt','w+')
+f.write(str(int(number)+1))
+f.close()
 
 market = 'S%P500'
 f = open('../data/simLog/sim' + number + '.txt','w+')
-f.write('Method: ')
-f.write(methodString)
+f.write('Strategy: ')
+f.write(strategyString)
 f.write('\n' + 'Comment: ')
 f.write(comment)
 f.write('\n' + 'Start date: ')
@@ -159,7 +140,4 @@ print 'avg gain:' ,np.mean(gainList)
 print 'total gain:' ,totalGain-1,np.mean(totalGainReal)-1
 print 'market gain:' ,marketGain
 print 'total Simulation time: ',time.time()-tStart
-print 'And Now His Watch is Ended'
-
-        
-    
+print 'And Now His Watch is Ended' 

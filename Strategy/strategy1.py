@@ -4,27 +4,26 @@ from stockClass import Stock
 sys.path.insert(0, '../Methods')
 import method1 as method
 
+def generateData(tickerList):
+
+    stockDataDict = method.generateData(tickerList)
+
+    return stockDataDict
+
 def mainBuy(date,stockDataDict,tickerList):
 
     buyParameters = [3,6]
     
-    if stockDataDict == {}:
-        buyList,stockDataDict = method.mainBuy(date,{},tickerList,buyParameters)
-    else:
-        buyList = method.mainBuy(date,stockDataDict,tickerList,buyParameters)
+    buyList = method.mainBuy(date,stockDataDict,tickerList,buyParameters)
 
-    return buyList,stockDataDict
+    return buyList
 
-def mainSell():
+def mainSell(date,stockDataDict,tickerList,portfolio):
     
-    sellParameters = [-0.1,0.1,-0.1]
+    sellParameters = []
+    
+    transactionList,indices = method.mainSell(date,stockDataDict,tickerList,sellParameters,portfolio)
 
-    return 'lol'
+    return transactionList,indices
 
-def mainSellSim(stockDataDict,totalBuyList):
 
-    sellParameters = [-0.1,0.1,-0.1]
-
-    transactionList = method.mainSellSim(stockDataDict,totalBuyList,sellParameters)
-
-    return transactionList
