@@ -1,0 +1,10 @@
+Method: methodGoogleTrends
+Comment: Eerste test met Google Trends indicator op Dow Jones
+Start date: 2004-01-01
+End date: 2011-02-01
+Stock Selection: S%P500
+Average gain (%): 0.158841203517
+Total gain (%): 23.8868817777
+Total gain Real (%): 4.63557133714
+Market gain (%): 15.6612305483
+Amount of orders: 162

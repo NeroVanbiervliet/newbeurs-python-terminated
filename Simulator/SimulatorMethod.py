@@ -17,15 +17,15 @@ if 'argv' in locals():
     sellParameters = argv[5]
     ID = argv[6]
 else:
-    startDate = date(2013, 1, 4)
-    endDate = date(2015, 7, 10)
-    methodString = 'method1'
+    startDate = date(2004, 1, 1)
+    endDate = date(2011, 2, 1)
+    methodString = 'methodGoogleTrends'
     stockSelection = 'S%P500'
-    buyParameters = [3,6]
+    buyParameters = [0,5]
     sellParameters = []
     
 
-comment = 'Nieuwe simulator test'
+comment = 'Eerste test met Google Trends indicator op Dow Jones'
 
 print comment
 transactionCost = 0.0075*2.
@@ -45,7 +45,8 @@ for i in range(delta.days + 1):
 # Inladen van alle tickers
 ##todo, moet nog via stockSelection
 tickerLimit = 200
-tickerListTotal = np.loadtxt('../data/tickerOverview.txt', delimiter=',', skiprows=0, usecols=(0,), unpack=False,dtype = 'str')
+#tickerListTotal = np.loadtxt('../data/tickerOverview.txt', delimiter=',', skiprows=0, usecols=(0,), unpack=False,dtype = 'str')
+tickerListTotal = ['^DJI']
 tickerListAssembly = []
 a = int(len(tickerListTotal)/tickerLimit) + 1
 for i in range(a):
@@ -61,7 +62,6 @@ for tickerList in tickerListAssembly:
     portfolio = []
     #money = 10000. 
     stockDataDict = method.generateData(tickerList)
-
 
     # Iterate all days
     for date in dateList:
@@ -99,9 +99,10 @@ for tickerList in tickerListAssembly:
                 buyMarketPrice += stockDataDict[ticker].closePricesDict[str(beginDate)]
                 sellMarketPrice += stockDataDict[ticker].closePricesDict[str(stopDate)]
 
-marketGain = (sellMarketPrice - buyMarketPrice)/buyMarketPrice
+marketGain = (sellMarketPrice - buyMarketPrice)/max(buyMarketPrice,1)
 
 # Part 4: calculate gains from the period
+## TODO: voeg options, shorten etc toe
 #totalBuyList = [[[ticker,price,date,duration]]]
 gainList = []
 amountOfOrders = 0
