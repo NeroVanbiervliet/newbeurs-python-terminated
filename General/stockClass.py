@@ -15,6 +15,7 @@ class Stock:
         self.category = []
         self.MACD_parameters = [12,26,9]
         self.lengthLimit = 2000
+        self.status = True
         
 ##        #load price data from txt file
 ##        if os.path.isfile(self.dataPath):
@@ -56,4 +57,5 @@ class Stock:
 
         else:
             print 'Data for ' + self.name + ' not available'
+            self.status = False
         

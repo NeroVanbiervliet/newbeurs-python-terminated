@@ -17,7 +17,7 @@ if 'argv' in locals():
     sellParameters = argv[5]
     ID = argv[6]
 else:
-    startDate = date(2012, 9, 4)
+    startDate = date(2013, 1, 4)
     endDate = date(2015, 7, 10)
     methodString = 'method1'
     stockSelection = 'S%P500'
@@ -43,35 +43,65 @@ for i in range(delta.days + 1):
     dateList.append(str(date))
 
 # Inladen van alle tickers
-tickerList = np.loadtxt('../data/tickerOverview.txt', delimiter=',', skiprows=0, usecols=(0,), unpack=False,dtype = 'str')
 ##todo, moet nog via stockSelection
-
+tickerLimit = 200
+tickerListTotal = np.loadtxt('../data/tickerOverview.txt', delimiter=',', skiprows=0, usecols=(0,), unpack=False,dtype = 'str')
+tickerListAssembly = []
+a = int(len(tickerListTotal)/tickerLimit) + 1
+for i in range(a):
+    tickerListAssembly.append(tickerListTotal[i*tickerLimit:i*tickerLimit+tickerLimit])
+    
 ## Start simulation ##
 tStart = time.time()
-
-
-portfolio = []
-#money = 10000. 
-stockDataDict = method.generateData(tickerList)
 transactionList = []
+buyMarketPrice = 0
+sellMarketPrice = 0
 
-# Iterate all days
-for date in dateList:
+for tickerList in tickerListAssembly:
+    portfolio = []
+    #money = 10000. 
+    stockDataDict = method.generateData(tickerList)
 
-    ## Part 1: buy signals
-    buyList = []
-    buyList = method.mainBuy(date,stockDataDict,tickerList,buyParameters)
 
-    portfolio += buyList
-    
-    # Part 2: sell signals
-    transactionListDummy,indices = method.mainSell(date,stockDataDict,tickerList,sellParameters,portfolio)
-    for i in range(len(indices)):
-        portfolio.pop(indices[i]-i)
+    # Iterate all days
+    for date in dateList:
+        ## Part 1: buy signals
+        buyList = []
+        buyList = method.mainBuy(date,stockDataDict,tickerList,buyParameters)
 
-    transactionList += transactionListDummy
-    
-# Part 3: calculate gains from the period
+        portfolio += buyList
+        
+        # Part 2: sell signals
+        transactionListDummy,indices = method.mainSell(date,stockDataDict,tickerList,sellParameters,portfolio)
+        for i in range(len(indices)):
+            portfolio.pop(indices[i]-i)
+
+        transactionList += transactionListDummy
+
+        
+    #Part 3: market growth
+    for ticker in tickerList:
+        if stockDataDict[ticker].status:
+            allDates = stockDataDict[ticker].dates
+            beginDate = startDate
+            count = 0
+            while (not (str(beginDate) in allDates)) and count < 4:
+                beginDate += td(1)
+                count += 1
+                   
+            stopDate = endDate
+            count = 0
+            while (not (str(stopDate) in allDates)) and count < 4:
+                stopDate += td(-1)
+                count += 1
+                
+            if str(stopDate) in allDates and str(beginDate) in allDates:
+                buyMarketPrice += stockDataDict[ticker].closePricesDict[str(beginDate)]
+                sellMarketPrice += stockDataDict[ticker].closePricesDict[str(stopDate)]
+
+marketGain = (sellMarketPrice - buyMarketPrice)/buyMarketPrice
+
+# Part 4: calculate gains from the period
 #totalBuyList = [[[ticker,price,date,duration]]]
 gainList = []
 amountOfOrders = 0
@@ -89,28 +119,6 @@ for i in range(len(transactionList)):
     
 #transactionList = [[ticker,buyprice,buydate,duration,score,sellPrice,sellDate,gain]]
 
-# Part 4: Check market growth
-buyMarketPrice = 0
-sellMarketPrice = 0
-for ticker in tickerList:
-    allDates = stockDataDict[ticker].dates
-    beginDate = startDate
-    count = 0
-    while (not (str(beginDate) in allDates)) and count < 4:
-        beginDate += td(1)
-        count += 1
-           
-    stopDate = endDate
-    count = 0
-    while (not (str(stopDate) in allDates)) and count < 4:
-        stopDate += td(-1)
-        count += 1
-        
-    if str(stopDate) in allDates and str(beginDate) in allDates:
-        buyMarketPrice += stockDataDict[ticker].closePricesDict[str(beginDate)]
-        sellMarketPrice += stockDataDict[ticker].closePricesDict[str(stopDate)]
-
-marketGain = (sellMarketPrice - buyMarketPrice)/buyMarketPrice
 # Part 5: Make all plots
 
 # Part 6: Make log file

@@ -26,16 +26,17 @@ def mainBuy(date,stockDataDict,tickerList,buyParameters):
     # Alle aandelen overlopen 
     for ticker in stockDataDict:
         #check if data is available for that date
-        allDates = stockDataDict[ticker].dates
-        if date in allDates and date in allDates[:len(stockDataDict[ticker].MACDScorei)]:
+        if stockDataDict[ticker].status:
+            allDates = stockDataDict[ticker].dates
+            if date in allDates and date in allDates[:len(stockDataDict[ticker].MACDScorei)]:
 
-            ## HIER Methode inserten
-            # Voorwaarde om te kopen en toevoegen aan de buyList
-            if stockDataDict[ticker].MACDScoreiDict[date] > limitScore:
-               score = stockDataDict[ticker].MACDScoreiDict[date]
-               price = stockDataDict[ticker].closePricesDict[date]
-               #date = stockDataDict[ticker].dates[entry]
-               buyList.append([ticker,price,date,duration,score])
+                ## HIER Methode inserten
+                # Voorwaarde om te kopen en toevoegen aan de buyList
+                if stockDataDict[ticker].MACDScoreiDict[date] > limitScore:
+                   score = stockDataDict[ticker].MACDScoreiDict[date]
+                   price = stockDataDict[ticker].closePricesDict[date]
+                   #date = stockDataDict[ticker].dates[entry]
+                   buyList.append([ticker,price,date,duration,score])
 
     return buyList
 
