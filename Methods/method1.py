@@ -44,7 +44,7 @@ def mainSell(date,stockDataDict,tickerList,sellParameters,portfolio):
 
     transactionList = []
     indices = []
-    #TODO: voeg een sell definitie toe die in real life wordt gebruikt
+    
     for i in range(len(portfolio)):
         ticker = portfolio[i][0]
         buyPrice = portfolio[i][1]

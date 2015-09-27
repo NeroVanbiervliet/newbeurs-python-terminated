@@ -17,8 +17,8 @@ if 'argv' in locals():
     sellParameters = argv[5]
     ID = argv[6]
 else:
-    startDate = date(2004, 1, 1)
-    endDate = date(2011, 2, 1)
+    startDate = date(2008, 1, 1)
+    endDate = date(2010, 7, 1)
     methodString = 'methodGoogleTrends'
     stockSelection = 'S%P500'
     buyParameters = [0,5]
