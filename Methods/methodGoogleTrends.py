@@ -14,7 +14,7 @@ def generateData(tickerList):
 def mainBuy(date,stockDataDict,tickerList,buyParameters):
     """ Dit is methode 1 die aandelen koopt en verkoopt onder bepaalde voorwaardes
         Input: date = welke dag geanalyseerd moet worden
-               parameters = [limitscore voor MACD,duration]
+               
         Output: buyList = zegt welke aandelen gekocht worden en voor hoe lang
         """
 
@@ -44,7 +44,7 @@ def mainSell(date,stockDataDict,tickerList,sellParameters,portfolio):
 
     transactionList = []
     indices = []
-    #TODO: voeg een sell definitie toe die in real life wordt gebruikt
+    
     for i in range(len(portfolio)):
         ticker = portfolio[i][0]
         buyPrice = portfolio[i][1]
