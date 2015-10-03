@@ -7,8 +7,6 @@ dbObject = DatabaseInteraction('backtest_real')
 
 
 # users
-# pass fromzerotoone
-dbObject.addUser("beurs","$2a$12$rBOjgBqaorleheA2XuospuN65sO5XsUUHddygO4z8Hcd2eIA.vNPe")
 
 # stocks
 dbObject.addStock("apple","AAPL","Nasdaq")
@@ -27,6 +25,9 @@ dbObject.addMethod("indexvolger","geef als string de index mee die je wil volgen
 dbObject.addStrategy("fundamentAgressief","fundamentalist","")
 dbObject.addStrategy("bel20volger","indexvolger","bel20")
 
+# add data sources
+dbObject.addDataSource("yahoo.py","prices of all stocks")
+dbObject.addDataSource("wikipedia.py","number of views")
 
 # simulation
 

@@ -12,7 +12,7 @@ dataBaseToReset = "backtest_real";
 password = "guikwwdplnvccbsitkhr";
 
 # hashed password to validate password
-hashedPassword = "$2b$12$kB/CtYnY9dnjlfPkNiLZj.9c1xgS3bh5zMDc.28n.4V.xgI85rL3e";
+hashedPassword = "$2b$12$Zc4Tc1EYEhdAbYVT0xhlouHsZKA6NO7EybtVe8wfsc6AAjkPR6MNK";
 
 if dataBaseToReset ==  "end_real" or dataBaseToReset == "backtest_real":
 	if bcrypt.hashpw(password, hashedPassword) == hashedPassword:
@@ -23,13 +23,10 @@ else:
 	print(dataBaseToReset + " database will now be reset.")
 
 
-conn = MySQLdb.connect(host="localhost", user="root", passwd="lnrddvnc")
+conn = MySQLdb.connect(host="localhost", user="root", passwd="crvfttngdsntwrk")
 
 # cursor object
 cur = conn.cursor() 
-
-# TODO CURRENT_TIMESTAMP vs NOW
-# NEED checken of velden met type timestamp niet automatisch worden geupdate bij aanpassen van record
 
 # tables
 
@@ -92,7 +89,7 @@ query += ("CREATE TABLE strategyEditHistory("
 	"FOREIGN KEY (editor) REFERENCES user(id),"
 	"PRIMARY KEY (id));")
 
-# NEED winst op deze transactie toevoegen aan transaction? 
+# TODO winst op deze transactie toevoegen aan transaction? 
 
 if dataBaseToReset == "end_develop" or dataBaseToReset == "end_real":
 
@@ -138,8 +135,15 @@ query += ("CREATE TABLE webAppLoginHistory("
 	"FOREIGN KEY (user) REFERENCES user(id),"
 	"PRIMARY KEY (id));")
 
+query += ("CREATE TABLE dataStatus("
+	"id int NOT NULL AUTO_INCREMENT,"	
+	"script varchar(50) NOT NULL,"
+	"description varchar(100),"
+	"lastUpdated TIMESTAMP,"
+	"PRIMARY KEY (id));")
+
 # views
-# NEED spaties nodig na elke regel? 
+# spaties nodig na elke regel in query string!
 
 if dataBaseToReset == "end_develop" or dataBaseToReset == "end_real":
 
@@ -153,8 +157,7 @@ if dataBaseToReset == "end_develop" or dataBaseToReset == "end_real":
 		"AND TCN_BUY.portfolio = PTF.id " 
 		"AND TCN_SELL.portfolio = PTF.id;")
 
-# NEED statistics view toevoegen
-
+# TODO statistics view toevoegen
 
 cur.execute(query)
 cur.close()

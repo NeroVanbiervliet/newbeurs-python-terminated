@@ -10,6 +10,5 @@ newStatus = argv[2]
 totalGain = argv[3]
 totalReturn = argv[4]
 
-dbInt = DatabaseInteraction('backtest_real','webapp');
-
+dbInt = DatabaseInteraction('backtest_real','webapp')
 dbInt.finaliseSimulation(simulationId, newStatus,totalGain,totalReturn)

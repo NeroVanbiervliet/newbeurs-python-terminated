@@ -35,3 +35,7 @@ print endTime-startTime
 [columnNames,queryResult] = dbObject.getTickerList("criterium='locatie' AND value='lieven zijn bureau'")
 print str(columnNames)
 print str(queryResult)
+
+[columnNames, dataRows] = dbObject.getAllTableEntries("simulation");
+for dataRow in dataRows:
+    print dataRow[9]

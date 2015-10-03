@@ -1,6 +1,6 @@
 #!/bin/bash
 #@params
-#$1=method name, $2=method args, $3=simulation id
+#$1=method name, $2=method args, $3=simulation id, $4=startDate, $5=endDate
 
 #cd't naar de locatie van dit script
 cd "$(dirname "$0")"
@@ -13,13 +13,12 @@ outpath=$outpath"output/"
 outpath=$outpath$3
 outpath=$outpath".raw"
 #path opstellen voor method script
-#NEED moet Simulator.py worden
+#NEED moet SimulatorMethod.py worden
 simulatorPath="../Simulator/nerotest.py"
 #simulator runnen met args van de strategy en output redirecten naar .raw file, &=subprocess, niet wachten op einde
 #double quotes rond $2 is omdat $2 een string is die spaties bevat, en anders zou hij dat zien als allemaal aparte argumenten
-#TODO begin en einddatum toevoegen waartussen moet gesimuleerd worden
-#TODO filter voor welke groep aandelen op gesimuleerd moet worden toevoegen
-python $simulatorPath $1 "$2" > $outpath 2>&1 &
+#TODO stockselection is nu voorlopig leeg
+python $simulatorPath "$4" "$5" $1 "" "$2" $3 > $outpath 2>&1 &
 
 pid=$!
 
@@ -29,7 +28,7 @@ pid=$!
 python add_pid_to_simulation.py $3 $pid &
 
 #watcher vasthangen aan pid
-#NEED remove volgende twee lijnen comment
+#TODO remove volgende twee lijnen comment want niet nodig in JSP?
 #>/dev/null 2>&1 dient om de output van het background process te discarden (weg te schrijven naar een file die niets voorstelt)
 #want de php exec functie wacht tot alle output beschikbaar is alvorens exec te beindigen
 bash watch_process $pid $3 >/dev/null 2>&1 &

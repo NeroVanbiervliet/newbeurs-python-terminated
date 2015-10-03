@@ -1,6 +1,9 @@
 from os import listdir
 from os.path import isfile, join
 
+# directories to ignore
+dirIgnore = [".git"]
+
 def getOccurrences(dir,numTabs):
 	
 	#tabstring generation
@@ -21,7 +24,8 @@ def getOccurrences(dir,numTabs):
 		if isfile(join(dir,item)):
 			fileList.append(item)
 		else: # het is een dir
-			dirList.append(item)
+			if not item in dirIgnore:
+				dirList.append(item)
 
 	# eerst dirs itereren
 	for item in dirList:

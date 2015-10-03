@@ -32,7 +32,7 @@ done
 path="output/"$2".raw"
 lastLine=$(tail -n1 $path 2>&1)
 
-#NEED gain en return nog aanpassen bij done
+#TODO[nextversion] gain en return nog aanpassen bij done
 if [[ $lastLine == "And Now His Watch is Ended" ]]
 then
 	python finish_simulation.py $2 done 0.2 100

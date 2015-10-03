@@ -7,8 +7,8 @@ class DatabaseInteraction:
     """A class to interact with the oak beurs database (c) Nero"""
 
     # variables here declared are class variables, they are common for all objects and each object has a pointer to the same value!
-    userList = ['root','webapp']
-    passwordList = ['lnrddvnc','frmzrtn5894rndm']
+    userList = ['root','webapp','python']
+    passwordList = ['crvfttngdsntwrk','frmzrtn5894rndm','twpntzvnsbtrdndr']
 
     # constructor
 
@@ -18,9 +18,9 @@ class DatabaseInteraction:
         self.dbName = dbName
         self.dbHost = 'localhost'
 
-        if (dbUser is None):  # default account is root NEED aanpassen -> python
+        if (dbUser is None):  # default account is python
             # local var needed further in constructor
-            dbUser = 'root'
+            dbUser = 'python'
             self.dbUser = dbUser
         else:
             self.dbUser = dbUser
@@ -131,7 +131,7 @@ class DatabaseInteraction:
     # de condition wordt beschreven aan de hand van entries in de stockCategory table
     def getTickerList(self,condition):
 
-        # NEED welke join?
+        # JOIN <=> INNER JOIN
         query = ("SELECT ticker FROM stock JOIN stockCategory ON stock.id = stockCategory.stock "
                  "WHERE %s;") % (condition)
 
@@ -213,7 +213,7 @@ class DatabaseInteraction:
     def addStrategy(self, strategyName, methodName, parameters):
 
         # method info ophalen om id te vinden uit name
-        # NEED exception voor als method niet voorkomt in db
+        # TODO exception voor als method niet voorkomt in db
         methodInfo = self.getMethodInfo(methodName)
 
         query = ("INSERT INTO strategy(name, method, parameters) "
@@ -243,16 +243,19 @@ class DatabaseInteraction:
     #
     def finaliseSimulation(self,simulationId,status,totalGain,totalReturn):
 
-        # checken of de status niet al stopped is
-        [columnNames, dataRows] = self.getAllTableEntries("simulation");
+	# checken of de status niet al stopped is
+	# TODO kan netter met een executeQuery en een WHERE id = ...
+        [columnNames, dataRows] = self.getAllTableEntries("simulation")
         for dataRow in dataRows:
             if dataRow[0] == simulationId: # juiste rij gevonden
-                if dataRow[9] == "stopped": # NEED testen of dit wel klopt, index 9 niet 100% zeker
-                    status = "stopped";
+		print "row gevonden!"
+                if dataRow[9] == "stopped": # NEED index 9 niet 100% zeker UPDATE index 9 klopt, maar het werkt wel niet!
+                     status = "stopped"
+		     print "status was stopped, so it was not updated"
                 break
 
         query = ("UPDATE simulation "
-                 "SET status='%s', totalGain='%s', totalReturn='%s'"
+                 "SET status='%s', totalGain='%s', totalReturn='%s', timestampEnd=NOW()"
                  "WHERE id='%s';") % (status,totalGain,totalReturn,simulationId)
 
         try:
@@ -260,4 +263,17 @@ class DatabaseInteraction:
         except _mysql_exceptions:
             print "OAK_ERROR: status updaten van de simulation in de database mislukt. Waarschijnlijk bestaat het sim id niet in de db"
             # exception herthrowen TODO eigen exception throwen met message hierboven
+            raise
+
+    # adds a data source
+    def addDataSource(self, scriptFile, description):
+
+        query = ("INSERT INTO dataStatus(script,description) "
+                 "VALUES (\'%s\',\'%s\');") % (scriptFile,description)
+
+        try:
+            self.executeQuery(query)
+        except _mysql_exceptions.IntegrityError:
+            print "OAK_ERROR: Creatie van nieuwe user in de database mislukt. UserName bestaat al in database"
+            # exception herthrowen TODO eigen exception throwen met andere message dan hierboven
             raise
