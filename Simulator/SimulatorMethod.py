@@ -2,29 +2,37 @@ from datetime import date, timedelta as td, datetime
 import numpy as np
 import time
 import sys
+from sys import argv
 sys.path.insert(0, '../General')
 from stockClass import Stock
 sys.path.insert(0, '../Methods')
 
 
 ## Inputs
-if 'argv' in locals():
-    startDate = argv[0]
-    endDate = argv[1]
-    methodString = argv[2]
-    stockSelection = argv[3]
-    buyParameters = argv[4]
-    sellParameters = argv[5]
+if len(argv) > 1:
+    startDateList = argv[1].split('-')
+    startDate = date(int(startDateList[0]),int(startDateList[1]),int(startDateList[2]))
+
+    endDateList = argv[2].split('-')
+    endDate = date(int(endDateList[0]),int(endDateList[1]),int(endDateList[2]))
+
+    methodString = argv[3]
+    stockSelection = argv[4]
+    parameters = argv[5] 
     ID = argv[6]
+
+    print 'startDate:'
+    print startDate.strftime("%B %d, %Y")
+    print 'endDate:'
+    print endDate.strftime("%B %d, %Y")
 else:
     startDate = date(2008, 1, 1)
     endDate = date(2010, 7, 1)
     methodString = 'methodGoogleTrends'
     stockSelection = 'S%P500'
-    buyParameters = [0,5]
-    sellParameters = []
+    parameters = [0,5]
     
-
+# TODO simulation description doorkrijgen
 comment = 'Eerste test met Google Trends indicator op Dow Jones'
 
 print comment
@@ -43,10 +51,10 @@ for i in range(delta.days + 1):
     dateList.append(str(date))
 
 # Inladen van alle tickers
-##todo, moet nog via stockSelection
+##TODO, moet nog via stockSelection
 tickerLimit = 200
-#tickerListTotal = np.loadtxt('../data/tickerOverview.txt', delimiter=',', skiprows=0, usecols=(0,), unpack=False,dtype = 'str')
-tickerListTotal = ['^DJI']
+tickerListTotal = np.loadtxt('../data/tickerOverview.txt', delimiter=',', skiprows=0, usecols=(0,), unpack=False,dtype = 'str')
+#tickerListTotal = ['^DJI']
 tickerListAssembly = []
 a = int(len(tickerListTotal)/tickerLimit) + 1
 for i in range(a):
@@ -67,12 +75,12 @@ for tickerList in tickerListAssembly:
     for date in dateList:
         ## Part 1: buy signals
         buyList = []
-        buyList = method.mainBuy(date,stockDataDict,tickerList,buyParameters)
+        buyList = method.mainBuy(date,stockDataDict,tickerList,parameters)
 
         portfolio += buyList
         
         # Part 2: sell signals
-        transactionListDummy,indices = method.mainSell(date,stockDataDict,tickerList,sellParameters,portfolio)
+        transactionListDummy,indices = method.mainSell(date,stockDataDict,tickerList,parameters,portfolio)
         for i in range(len(indices)):
             portfolio.pop(indices[i]-i)
 

@@ -1,2 +1,0 @@
-ticker,buyprice,buydate,duration,score,sellprice,selldate
-['AGN', 30.700001, '2007-05-02', 6, 3.0372999929840931, 30.799999, '2007-05-10', 0.0027686644049294776]

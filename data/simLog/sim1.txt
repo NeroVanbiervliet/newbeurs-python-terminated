@@ -1,1 +1,10 @@
-Method: 
+Method: methodGoogleTrends
+Comment: Eerste test met Google Trends indicator op Dow Jones
+Start date: 2015-07-13
+End date: 2015-08-19
+Stock Selection: 
+Average gain (%): nan
+Total gain (%): 0.0
+Total gain Real (%): 0.0
+Market gain (%): -0.465650043408
+Amount of orders: 0

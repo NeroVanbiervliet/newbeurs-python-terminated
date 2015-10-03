@@ -13,8 +13,7 @@ outpath=$outpath"output/"
 outpath=$outpath$3
 outpath=$outpath".raw"
 #path opstellen voor method script
-#NEED moet SimulatorMethod.py worden
-simulatorPath="../Simulator/nerotest.py"
+simulatorPath="../Simulator/SimulatorMethod.py"
 #simulator runnen met args van de strategy en output redirecten naar .raw file, &=subprocess, niet wachten op einde
 #double quotes rond $2 is omdat $2 een string is die spaties bevat, en anders zou hij dat zien als allemaal aparte argumenten
 #TODO stockselection is nu voorlopig leeg

@@ -1,8 +1,14 @@
-../Simulator/nerotest.py
-2015-10-01
-2015-10-02
-fundamentAgressief
-
-
-3
+/usr/local/lib/python2.7/dist-packages/numpy/core/_methods.py:59: RuntimeWarning: Mean of empty slice.
+  warnings.warn("Mean of empty slice.", RuntimeWarning)
+/usr/local/lib/python2.7/dist-packages/numpy/core/_methods.py:71: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+startDate:
+January 01, 2008
+endDate:
+January 01, 2010
+Eerste test met Google Trends indicator op Dow Jones
+avg gain: nan
+total gain: 0.0 0.0
+market gain: -0.19230963582
+total Simulation time:  77.2259271145
 And Now His Watch is Ended

@@ -1,7 +1,10 @@
 Method: method1
-Comment: Test met werkende MACD, MACDScore > 4, duration 10 dagen
-Start date: 2014-07-10
-End date: 2015-07-10
-Stock Selection: S%P500
-Average gain (%): 0.459613175879
-Amount of orders: 441
+Comment: Eerste test met Google Trends indicator op Dow Jones
+Start date: 2014-06-07
+End date: 2015-06-07
+Stock Selection: 
+Average gain (%): nan
+Total gain (%): 0.0
+Total gain Real (%): 0.0
+Market gain (%): 8.60634494311
+Amount of orders: 0

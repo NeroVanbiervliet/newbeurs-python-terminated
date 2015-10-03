@@ -196,6 +196,8 @@ class DatabaseInteraction:
     # users must be added in the web application, not in python
     def addUser(self, userName, passwordHashed):
 
+		# NEED hashing hier doen, pass als argument
+
         query = ("INSERT INTO user(name, passwordHashed) "
                  "VALUES (\'%s\',\'%s\');") % (userName, passwordHashed)
 

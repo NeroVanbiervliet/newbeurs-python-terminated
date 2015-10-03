@@ -1,6 +1,10 @@
-Method: method1
-Start date: 2015-07-10
-End date: 2014-07-10
-Stock Selection: S%P500
-Average gain (%): 0.900264939284
-Amount of orders: 265
+Method: methodGoogleTrends
+Comment: Eerste test met Google Trends indicator op Dow Jones
+Start date: 2015-01-14
+End date: 2015-08-17
+Stock Selection: 
+Average gain (%): nan
+Total gain (%): 0.0
+Total gain Real (%): 0.0
+Market gain (%): 5.65833239029
+Amount of orders: 0

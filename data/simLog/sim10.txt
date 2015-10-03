@@ -1,6 +1,0 @@
-Method: method1Comment: Dit zijn testjes met een random indicator
-Start date: 2014-07-10
-End date: 2015-07-10
-Stock Selection: S%P500
-Average gain (%): 0.100556998479
-Amount of orders: 11459
