@@ -88,6 +88,7 @@ for tickerList in tickerListAssembly:
 
         
     #Part 3: market growth
+    #TODO: change this is random indicator + buy and sell everything indicator
     for ticker in tickerList:
         if stockDataDict[ticker].status:
             allDates = stockDataDict[ticker].dates
@@ -119,6 +120,7 @@ amountOfOrders = len(transactionList)
 n = (int(amountOfOrders/len(dateList))+1)*6.
 totalGainReal = np.ones(n)
 #iterate all buy signals
+## TODO: betere gain estimation maken
 for i in range(len(transactionList)):
     gain = (transactionList[i][5] - transactionList[i][1] - transactionCost)/transactionList[i][1]
     transactionList[i].append(gain)
