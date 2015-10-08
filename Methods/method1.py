@@ -1,6 +1,6 @@
 import numpy as np
 import sys
-sys.path.insert(0, '../General')
+sys.path.insert(0, 'General')
 from stockClass import Stock
 
 def generateData(tickerList):
@@ -36,7 +36,8 @@ def mainBuy(date,stockDataDict,tickerList,parameters):
                    score = stockDataDict[ticker].MACDScoreiDict[date]
                    price = stockDataDict[ticker].closePricesDict[date]
                    #date = stockDataDict[ticker].dates[entry]
-                   buyList.append([ticker,price,date,duration,score])
+                   type = 'long'
+                   buyList.append([ticker,price,date,duration,type,score])
 
     return buyList
 
@@ -50,6 +51,8 @@ def mainSell(date,stockDataDict,tickerList,parameters,portfolio):
         buyPrice = portfolio[i][1]
         buyDate = portfolio[i][2]
         duration = portfolio[i][3]
+        type = portfolio[i][4]
+        score = portfolio[i][5]
         allDates = stockDataDict[ticker].dates
         
         ##Selldate en sellprice hier
@@ -59,55 +62,11 @@ def mainSell(date,stockDataDict,tickerList,parameters,portfolio):
             if (index1 - index2) >= duration:
                 sellDate = date
                 sellPrice = stockDataDict[ticker].closePricesDict[sellDate]
-                transactionList.append([ticker,buyPrice,buyDate,duration,portfolio[i][4],sellPrice,sellDate])
+                transactionList.append([ticker,buyPrice,buyDate,duration,type,score,sellPrice,sellDate])
                 indices.append(i)
                    
     return transactionList,indices
 
-def mainSellSim(stockDataDict,buyList,parameters):
-    
-    transactionList = []
-    lowerLimit = parameters[0]
-    upperLimit = parameters[1]
-    midLimit = parameters[2]
-    
-    for i in range(len(buyList)):
-        for j in range(len(buyList[i])):
-            ticker = buyList[i][j][0]
-            buyPrice = buyList[i][j][1]
-            buyDate = buyList[i][j][2]
-            duration = buyList[i][j][3]
-            allDates = stockDataDict[ticker].dates
-
-            ##Selldate en sellprice hier
-            
-            index = np.where(allDates==buyDate)[0][0]
-            notSold = True
-            for k in range(1,duration):
-                date = allDates[index - k]
-                yesterday = allDates[index - k + 1]
-                # Als er bepaalde boven en onder limieten bereikt zijn, verkopen
-                if ((stockDataDict[ticker].closePricesDict[date] - buyPrice)/buyPrice < lowerLimit \
-                    or (stockDataDict[ticker].closePricesDict[date] - buyPrice)/buyPrice > upperLimit) and notSold :
-                    sellDate = date
-                    notSold = False
-                    
-                # Als het aandeel daalt met midlimit, verkopen
-                if ((stockDataDict[ticker].closePricesDict[date] - stockDataDict[ticker].closePricesDict[yesterday])/ \
-                    stockDataDict[ticker].closePricesDict[yesterday]) < midLimit and notSold:
-                    sellDate = date
-                    notSold = False
-                    
-            if notSold:
-                sellDate = allDates[index - duration]
-                
-            sellPrice = stockDataDict[ticker].closePricesDict[sellDate]
-
-            ##
-            
-            transactionList.append([ticker,buyPrice,buyDate,duration,buyList[i][j][4],sellPrice,sellDate])
-
-    return transactionList
 
 ### temporary ###
 

@@ -1,7 +1,7 @@
 import sys
-sys.path.insert(0, '../General')
+sys.path.insert(0, 'General')
 from stockClass import Stock
-sys.path.insert(0, '../Methods')
+sys.path.insert(0, 'Methods')
 import method1 as method
 
 def generateData(tickerList):

@@ -1,9 +1,9 @@
 import numpy as np
 import os.path
 import sys
-sys.path.insert(0, '../Indicators/MACD')
+sys.path.insert(0, 'Indicators/MACD')
 import mainMACD as MACD
-sys.path.insert(0, '../Indicators/GoogleTrend')
+sys.path.insert(0, 'Indicators/GoogleTrend')
 import mainGoogleTrend as GoogleTrend
 import matplotlib.pyplot as plt
 
@@ -12,7 +12,7 @@ class Stock:
     def __init__(self,ticker):
 	# TODO add sql
         self.name = ticker
-        self.dataPath = '../data/stockPrices/' + ticker + '.txt'
+        self.dataPath = 'data/stockPrices/' + ticker + '.txt'
         self.market = 'lol'
         self.category = []
         self.MACD_parameters = [12,26,9]
