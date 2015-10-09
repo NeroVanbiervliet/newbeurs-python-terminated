@@ -54,11 +54,14 @@ def calcGains(transactionList,transactionCost,dateList):
     rawGainList = []
     rawDurationList = []
     for i in range(len(transactionList)):
-        gain = (transactionList[i][6] - transactionList[i][1] - transactionCost)/transactionList[i][1]
+        gainTemp = (transactionList[i][6] - transactionList[i][1] - transactionCost)/transactionList[i][1]
         duration = transactionList[i][3]
         type = transactionList[i][4]
         if type == 'short':
-            gain = -gain
+            gain = -gainTemp
+        if type == 'long':
+            gain = gainTemp
+            
         rawGainList.append(gain)
         rawDurationList.append(duration)
 
