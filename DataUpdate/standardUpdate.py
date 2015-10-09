@@ -1,3 +1,4 @@
+import os
 dname = os.path.dirname('../')
 os.chdir(dname)
 
