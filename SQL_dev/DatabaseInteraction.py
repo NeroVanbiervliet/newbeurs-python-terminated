@@ -135,14 +135,14 @@ class DatabaseInteraction:
         query = ("SELECT ticker FROM stock JOIN stockCategory ON stock.id = stockCategory.stock "
                  "WHERE %s;") % (condition)
 
-        print query
+        [columnNames, queryResult] = self.executeQuery(query)
 
-        try:
-            return self.executeQuery(query)
-        except _mysql_exceptions.IntegrityError:
-            print "OAK_ERROR: Mogelijk probleem: geen idee"
-            # exception herthrowen TODO eigen exception throwen met message hierboven?
-            raise
+        # gegevens herschikken
+        result = []
+        for ticker in queryResult:
+            result.append(ticker[0])
+
+        return result
 
     # returns stock info in a dictionary
     def getStockInfo(self, ticker):
