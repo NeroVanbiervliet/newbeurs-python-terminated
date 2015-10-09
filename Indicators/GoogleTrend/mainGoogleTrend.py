@@ -3,7 +3,7 @@ from datetime import date, timedelta as td, datetime
 
 def Value():
     word = 'debt'
-    dataPath = 'data/googleTrends/' + word + '.txt'
+    dataPath = 'googleTrends/' + word + '.txt'
     dummy = np.loadtxt(dataPath, delimiter=',', skiprows=1, usecols=(0,1), unpack=False,dtype = 'str')
     hits = []
     dates = []

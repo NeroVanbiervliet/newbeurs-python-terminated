@@ -36,7 +36,15 @@ def mainBuy(date,stockDataDict,tickerList,buyParameters):
                    score = stockDataDict[ticker].GTScoreDict[date]
                    price = stockDataDict[ticker].closePricesDict[date]
                    #date = stockDataDict[ticker].dates[entry]
-                   buyList.append([ticker,price,date,duration,score])
+                   type = 'long'
+                   buyList.append([ticker,price,date,duration,type,score])
+                   
+                if stockDataDict[ticker].GTScoreDict[date] > limitScore:
+                   score = stockDataDict[ticker].GTScoreDict[date]
+                   price = stockDataDict[ticker].closePricesDict[date]
+                   #date = stockDataDict[ticker].dates[entry]
+                   type = 'short'
+                   buyList.append([ticker,price,date,duration,type,score])
 
     return buyList
 
@@ -59,7 +67,7 @@ def mainSell(date,stockDataDict,tickerList,sellParameters,portfolio):
             if (index1 - index2) >= duration:
                 sellDate = date
                 sellPrice = stockDataDict[ticker].closePricesDict[sellDate]
-                transactionList.append([ticker,buyPrice,buyDate,duration,portfolio[i][4],sellPrice,sellDate])
+                transactionList.append([ticker,buyPrice,buyDate,duration,type,portfolio[i][4],sellPrice,sellDate])
                 indices.append(i)
                    
     return transactionList,indices
