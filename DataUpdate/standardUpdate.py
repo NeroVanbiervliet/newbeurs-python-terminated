@@ -1,6 +1,10 @@
 import os
-dname = os.path.dirname('../')
+#navigeer naar directory van deze file
+abspath = os.path.abspath(__file__)
+dname = os.path.dirname(abspath)
 os.chdir(dname)
+
+os.chdir('../')
 
 import sys
 import threading
