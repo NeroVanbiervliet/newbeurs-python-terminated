@@ -80,7 +80,7 @@ transactionListRandom = []
 stockCount = 0
 
 for tickerList in tickerListAssembly:
-    stockCount += 1
+    stockCount += len(tickerList)
     portfolio = []
     #money = 10000. 
     stockDataDict = method.generateData(tickerList)

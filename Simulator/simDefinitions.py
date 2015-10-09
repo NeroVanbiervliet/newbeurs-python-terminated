@@ -22,7 +22,7 @@ def randomSim(date,stockDataDict):
                 if random.randint(0,30) == 1: 
                    buyPrice = stockDataDict[ticker].closePricesDict[date]
                    buyDate = date
-                   duration = random.randint(5,10)
+                   duration = random.randint(4,10)
                    index = np.where(allDates==buyDate)[0][0]
                    sellDate = allDates[index - duration]
                    sellPrice = stockDataDict[ticker].closePricesDict[sellDate]
@@ -38,7 +38,6 @@ def marketSim(date,stockDataDict):
         if stockDataDict[ticker].status:
             allDates = stockDataDict[ticker].dates
             if date in allDates:
-                 
                 buyPrice = stockDataDict[ticker].closePricesDict[date]
                 buyDate = date
                 duration = 1
