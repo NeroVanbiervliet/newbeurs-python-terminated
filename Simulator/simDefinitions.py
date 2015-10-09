@@ -49,6 +49,7 @@ def marketSim(date,stockDataDict):
     return transactionList
 
 def calcGains(transactionList,transactionCost,dateList):
+    
     if len(transactionList) > 0:
         rawGainList = []
         rawDurationList = []
@@ -69,13 +70,14 @@ def calcGains(transactionList,transactionCost,dateList):
         avgDuration = np.mean(rawDurationList)
         n = int(orderPerDays*avgDuration)+1
         totalGainReal = np.ones(n)
+        
         for i in range(len(rawGainList)):
-            totalGainReal[i%n] = totalGainReal[i%n]*(1+gain)
+            totalGainReal[i%n] = totalGainReal[i%n]*(1+rawGainList[i])
 
         avgGain = np.mean(rawGainList)
-        yearGain = (1 + avgGain)**(amountOfDays/avgDuration)
+        yearGain = (1. + avgGain)**(amountOfDays/avgDuration)
 
-        return [np.mean(totalGainReal)-1 , avgGain, yearGain]
+        return [np.mean(totalGainReal)-1, avgGain, yearGain]
     else:
         return [0,0,0]
     

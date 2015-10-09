@@ -103,7 +103,7 @@ for tickerList in tickerListAssembly:
         # Part 3: Market growth & Random method
         dummy = simDef.marketSim(date,stockDataDict)
         transactionListMarket += dummy
-        dummt = simDef.randomSim(date,stockDataDict)
+        dummy = simDef.randomSim(date,stockDataDict)
         transactionListRandom += dummy
         
 # Part 4: calculate gains from the period
