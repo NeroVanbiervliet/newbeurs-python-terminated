@@ -135,12 +135,14 @@ class DatabaseInteraction:
         query = ("SELECT ticker FROM stock JOIN stockCategory ON stock.id = stockCategory.stock "
                  "WHERE %s;") % (condition)
 
-        try:
-            return self.executeQuery(query)
-        except _mysql_exceptions.IntegrityError:
-            print "OAK_ERROR: Mogelijk probleem: geen idee"
-            # exception herthrowen TODO eigen exception throwen met message hierboven?
-            raise
+        [columnNames, queryResult] = self.executeQuery(query)
+
+        # gegevens herschikken
+        result = []
+        for ticker in queryResult:
+            result.append(ticker[0])
+
+        return result
 
     # returns stock info in a dictionary
     def getStockInfo(self, ticker):
@@ -246,24 +248,24 @@ class DatabaseInteraction:
 	# checken of de status niet al stopped is
 	# TODO kan netter met een executeQuery en een WHERE id = ...
         
-        [columnNames, dataRows] = self.getAllTableEntries("simulation")
-        for dataRow in dataRows:
-                # juiste rij gevonden, int() nodig omdat simulationId komt van bash script en dat is dan een string, geen int!  
-                if dataRow[0] == int(simulationId):            
-                        if dataRow[9] == "stopped":
-                                status = "stopped"
-                        break
+		[columnNames, dataRows] = self.getAllTableEntries("simulation")
+		for dataRow in dataRows:
+			# juiste rij gevonden, int() nodig omdat simulationId komt van bash script en dat is dan een string, geen int!  
+			if dataRow[0] == int(simulationId):            
+				if dataRow[9] == "stopped":
+					status = "stopped"
+				break
 
-        query = ("UPDATE simulation "
-                        "SET status='%s', totalGain='%s', totalReturn='%s', timestampEnd=NOW()"
-                        "WHERE id='%s';") % (status,totalGain,totalReturn,simulationId)
+		query = ("UPDATE simulation "
+				"SET status='%s', totalGain='%s', totalReturn='%s', timestampEnd=NOW()"
+				"WHERE id='%s';") % (status,totalGain,totalReturn,simulationId)
 
-        try:
-                self.executeQuery(query)
-        except _mysql_exceptions:
-                print "OAK_ERROR: status updaten van de simulation in de database mislukt. Waarschijnlijk bestaat het sim id niet in de db"
-                # exception herthrowen TODO eigen exception throwen met message hierboven
-                raise
+		try:
+			self.executeQuery(query)
+		except _mysql_exceptions:
+			print "OAK_ERROR: status updaten van de simulation in de database mislukt. Waarschijnlijk bestaat het sim id niet in de db"
+			# exception herthrowen TODO eigen exception throwen met message hierboven
+			raise
 
     # adds a data source
     def addDataSource(self, scriptFile, description):
