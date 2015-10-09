@@ -1,13 +1,4 @@
-/usr/local/lib/python2.7/dist-packages/numpy/core/_methods.py:59: RuntimeWarning: Mean of empty slice.
-  warnings.warn("Mean of empty slice.", RuntimeWarning)
-/usr/local/lib/python2.7/dist-packages/numpy/core/_methods.py:71: RuntimeWarning: invalid value encountered in double_scalars
-  ret = ret.dtype.type(ret / rcount)
-dates:
-January 13, 2015
-August 19, 2015
-Eerste test met Google Trends indicator op Dow Jones
-avg gain: nan
-total gain: 0.0 0.0
-market gain: 0.0404161536494
-total Simulation time:  231.934079885
-And Now His Watch is Ended
+Traceback (most recent call last):
+  File "../Simulator/SimulatorMethod.py", line 14, in <module>
+    startDate = date(int(startDateList[0]),int(startDateList[1]),int(startDateList[2]))
+ValueError: invalid literal for int() with base 10: ''

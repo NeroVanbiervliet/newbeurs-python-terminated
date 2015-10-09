@@ -11,3 +11,4 @@ pid = argv[2]
 dbInt = DatabaseInteraction('backtest_real','webapp')
 
 dbInt.addPidToSimulation(simulationId, pid)
+

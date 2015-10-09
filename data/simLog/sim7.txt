@@ -1,6 +1,6 @@
-Method: methodGoogleTrends
+Method: method1
 Comment: Eerste test met Google Trends indicator op Dow Jones
-Start date: 2015-10-04
+Start date: 2015-08-11
 End date: 2015-10-06
 Stock Selection: 
 Average gain (%): nan

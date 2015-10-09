@@ -53,7 +53,6 @@ query += ("CREATE TABLE stock("
 	"id int NOT NULL AUTO_INCREMENT,"
 	"name varchar(50) NOT NULL,"
 	"ticker varchar(30) NOT NULL UNIQUE,"
-	"market varchar(20),"
 	"PRIMARY KEY (id));")
 
 query += ("CREATE TABLE stockCategory("

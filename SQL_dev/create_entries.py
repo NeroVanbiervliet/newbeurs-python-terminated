@@ -7,6 +7,9 @@ dbObject = DatabaseInteraction('backtest_real')
 
 
 # users
+dbObject.addUser("nero","$2a$12$/MugNnVIjdLd1TnshSyK2eXp.jM3lGM1GipTdFNTuwTHvFimPgCbu")
+dbObject.addUser("michiel","$2a$12$/MugNnVIjdLd1TnshSyK2eXp.jM3lGM1GipTdFNTuwTHvFimPgCbu")
+dbObject.addUser("baerto","$2a$12$/MugNnVIjdLd1TnshSyK2eXp.jM3lGM1GipTdFNTuwTHvFimPgCbu")
 
 # stocks
 dbObject.addStock("apple","AAPL","Nasdaq")
@@ -32,6 +35,5 @@ dbObject.addDataSource("wikipedia.py","number of views")
 # simulation
 
 # INSERT INTO simulation(name,description,owner,strategy,totalGain,totalReturn,status,progress) VALUES('denaam','descip0','1','1','3','4','running','40');
-
 
 print 'Done'

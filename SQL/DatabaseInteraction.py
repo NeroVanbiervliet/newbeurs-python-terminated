@@ -88,10 +88,10 @@ class DatabaseInteraction:
     # name = apple
     # ticker = AAPL
     # market = Nasdaq
-    def addStock(self, name, ticker, market):
+    def addStock(self, name, ticker):
 
-        query = ("INSERT INTO stock(name, ticker, market) "
-                 "VALUES (\'%s\',\'%s\',\'%s\');") % (name, ticker, market)
+        query = ("INSERT INTO stock(name, ticker) "
+                 "VALUES (\'%s\',\'%s\');") % (name, ticker)
 
         try:
             self.executeQuery(query)
@@ -196,7 +196,7 @@ class DatabaseInteraction:
     # users must be added in the web application, not in python
     def addUser(self, userName, passwordHashed):
 
-		# NEED hashing hier doen, pass als argument
+		# TODO hashing hier doen, passwoord als argument meegeven
 
         query = ("INSERT INTO user(name, passwordHashed) "
                  "VALUES (\'%s\',\'%s\');") % (userName, passwordHashed)
@@ -247,25 +247,25 @@ class DatabaseInteraction:
 
 	# checken of de status niet al stopped is
 	# TODO kan netter met een executeQuery en een WHERE id = ...
-        [columnNames, dataRows] = self.getAllTableEntries("simulation")
-        for dataRow in dataRows:
-            if dataRow[0] == simulationId: # juiste rij gevonden
-		print "row gevonden!"
-                if dataRow[9] == "stopped": # NEED index 9 niet 100% zeker UPDATE index 9 klopt, maar het werkt wel niet!
-                     status = "stopped"
-		     print "status was stopped, so it was not updated"
-                break
+        
+		[columnNames, dataRows] = self.getAllTableEntries("simulation")
+		for dataRow in dataRows:
+			# juiste rij gevonden, int() nodig omdat simulationId komt van bash script en dat is dan een string, geen int!  
+			if dataRow[0] == int(simulationId):            
+				if dataRow[9] == "stopped":
+					status = "stopped"
+				break
 
-        query = ("UPDATE simulation "
-                 "SET status='%s', totalGain='%s', totalReturn='%s', timestampEnd=NOW()"
-                 "WHERE id='%s';") % (status,totalGain,totalReturn,simulationId)
+		query = ("UPDATE simulation "
+				"SET status='%s', totalGain='%s', totalReturn='%s', timestampEnd=NOW()"
+				"WHERE id='%s';") % (status,totalGain,totalReturn,simulationId)
 
-        try:
-            self.executeQuery(query)
-        except _mysql_exceptions:
-            print "OAK_ERROR: status updaten van de simulation in de database mislukt. Waarschijnlijk bestaat het sim id niet in de db"
-            # exception herthrowen TODO eigen exception throwen met message hierboven
-            raise
+		try:
+			self.executeQuery(query)
+		except _mysql_exceptions:
+			print "OAK_ERROR: status updaten van de simulation in de database mislukt. Waarschijnlijk bestaat het sim id niet in de db"
+			# exception herthrowen TODO eigen exception throwen met message hierboven
+			raise
 
     # adds a data source
     def addDataSource(self, scriptFile, description):
