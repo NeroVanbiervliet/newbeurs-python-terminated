@@ -77,8 +77,10 @@ tStart = time.time()
 transactionList = []
 transactionListMarket = []
 transactionListRandom = []
+stockCount = 0
 
 for tickerList in tickerListAssembly:
+    stockCount += 1
     portfolio = []
     #money = 10000. 
     stockDataDict = method.generateData(tickerList)
@@ -159,6 +161,9 @@ f.write(str(marketYearGain*100.))
 
 f.write('\n' + 'Amount of orders: ')
 f.write(str(len(transactionList)))
+
+f.write('\n' + 'Amount of stocks in selection: ')
+f.write(str(stockCount))
 f.close()
 
 f = open('data/simLog/sim' + number + 'transactions' + '.txt','w+')
