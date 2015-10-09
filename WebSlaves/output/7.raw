@@ -3,12 +3,12 @@
 /usr/local/lib/python2.7/dist-packages/numpy/core/_methods.py:71: RuntimeWarning: invalid value encountered in double_scalars
   ret = ret.dtype.type(ret / rcount)
 startDate:
-October 04, 2015
+August 11, 2015
 endDate:
 October 06, 2015
 Eerste test met Google Trends indicator op Dow Jones
 avg gain: nan
 total gain: 0.0 0.0
 market gain: 0
-total Simulation time:  56.3217608929
+total Simulation time:  41.6471300125
 And Now His Watch is Ended

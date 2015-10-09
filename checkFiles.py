@@ -52,9 +52,10 @@ def getOccurrences(dir,numTabs):
 		totalNeed += currentNeed
 		totalTodo += currentTodo
 
-		if currentNeed>0 or currentTodo>0:
+		if currentNeed>0: # rood en wit
+			consoleOutput += tabString + "\033[0;31m" + item + "\033[0m " + str(currentNeed) + ' (' + str(currentTodo) + ')\n'
+		elif currentTodo>0: # wit (standaard)
 			consoleOutput += tabString + item + " " + str(currentNeed) + ' (' + str(currentTodo) + ')\n'
-	
 
 	return [totalNeed,totalTodo, consoleOutput]
 
