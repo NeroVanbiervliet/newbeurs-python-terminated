@@ -135,8 +135,6 @@ class DatabaseInteraction:
         query = ("SELECT ticker FROM stock JOIN stockCategory ON stock.id = stockCategory.stock "
                  "WHERE %s;") % (condition)
 
-        print query
-
         try:
             return self.executeQuery(query)
         except _mysql_exceptions.IntegrityError:
