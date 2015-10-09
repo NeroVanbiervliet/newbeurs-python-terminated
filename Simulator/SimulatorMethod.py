@@ -22,6 +22,7 @@ sys.path.insert(0, 'Methods')
 
 ### Inputs ###
 if len(argv) > 1:
+    
     startDateList = argv[1].split('-')
     startDate = date(int(startDateList[0]),int(startDateList[1]),int(startDateList[2]))
 
@@ -33,6 +34,9 @@ if len(argv) > 1:
     parameters = argv[5] 
     ID = argv[6]
 
+    print argv
+    print
+    
     print 'startDate:'
     print startDate.strftime("%B %d, %Y")
     print 'endDate:'
