@@ -4,6 +4,9 @@ import numpy as np
 import time
 import sys
 import random
+import sys
+sys.path.insert(0, 'SQL')
+from DatabaseInteraction import DatabaseInteraction 
 
 def endGame():
     print 'And Now His Watch is Ended'
@@ -83,11 +86,13 @@ def genDateList(startDate,endDate):
     return dateList
 
 def genTickerlist(stockSelection):
-    
+    dbInt = DatabaseInteraction('backtest_real')
+
     # TODO: via stockSelection
     tickerLimit = 200
-    tickerListTotal = np.loadtxt('data/tickerOverview.txt', delimiter=',', skiprows=0, usecols=(0,), unpack=False,dtype = 'str')
-    #tickerListTotal = ['^DJI']
+    #tickerListTotal = np.loadtxt('data/tickerOverview.txt', delimiter=',', skiprows=0, usecols=(0,), unpack=False,dtype = 'str')
+    tickerListTotal = dbInt.getTickerList(stockSelection)
+
     tickerListAssembly = []
     a = int(len(tickerListTotal)/tickerLimit) + 1
     for i in range(a):
