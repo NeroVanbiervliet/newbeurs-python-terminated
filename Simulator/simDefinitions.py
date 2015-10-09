@@ -50,33 +50,35 @@ def marketSim(date,stockDataDict):
     return transactionList
 
 def calcGains(transactionList,transactionCost,dateList):
+    if len(transactionList) > 0:
+        rawGainList = []
+        rawDurationList = []
+        for i in range(len(transactionList)):
+            gainTemp = (transactionList[i][6] - transactionList[i][1] - transactionCost)/transactionList[i][1]
+            duration = transactionList[i][3]
+            type = transactionList[i][4]
+            if type == 'short':
+                gain = -gainTemp
+            if type == 'long':
+                gain = gainTemp
+                
+            rawGainList.append(gain)
+            rawDurationList.append(duration)
 
-    rawGainList = []
-    rawDurationList = []
-    for i in range(len(transactionList)):
-        gainTemp = (transactionList[i][6] - transactionList[i][1] - transactionCost)/transactionList[i][1]
-        duration = transactionList[i][3]
-        type = transactionList[i][4]
-        if type == 'short':
-            gain = -gainTemp
-        if type == 'long':
-            gain = gainTemp
-            
-        rawGainList.append(gain)
-        rawDurationList.append(duration)
+        amountOfDays = len(dateList)/365.*250.
+        orderPerDays = len(transactionList)/(amountOfDays)
+        avgDuration = np.mean(rawDurationList)
+        n = int(orderPerDays*avgDuration)+1
+        totalGainReal = np.ones(n)
+        for i in range(len(rawGainList)):
+            totalGainReal[i%n] = totalGainReal[i%n]*(1+gain)
 
-    amountOfDays = len(dateList)/365.*250.
-    orderPerDays = len(transactionList)/(amountOfDays)
-    avgDuration = np.mean(rawDurationList)
-    n = int(orderPerDays*avgDuration)+1
-    totalGainReal = np.ones(n)
-    for i in range(len(rawGainList)):
-        totalGainReal[i%n] = totalGainReal[i%n]*(1+gain)
+        avgGain = np.mean(rawGainList)
+        yearGain = (1 + avgGain)**(amountOfDays/avgDuration)
 
-    avgGain = np.mean(rawGainList)
-    yearGain = (1 + avgGain)**(amountOfDays/avgDuration)
-
-    return [np.mean(totalGainReal)-1 , avgGain, yearGain]
+        return [np.mean(totalGainReal)-1 , avgGain, yearGain]
+    else:
+        return [0,0,0]
     
 def genDateList(startDate,endDate):
 
