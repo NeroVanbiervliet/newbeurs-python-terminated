@@ -58,7 +58,7 @@ dbInt.addStrategy("MACD 3 6","method1","3 6")
 dbInt.addStrategy("Google trends 0 5","methodGoogleTrends","0 5")
 
 # data update scripts
-dbInt.addDataSource("standardUpdate.py", "standar yahoo data")
+dbInt.addDataSource("standardUpdate.py", "standard yahoo data")
 
 endTime = time.time()
 elapsedTime = (endTime-startTime)
