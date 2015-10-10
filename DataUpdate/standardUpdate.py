@@ -10,7 +10,7 @@ import sys
 import threading
 import numpy as np
 sys.path.insert(0, 'DataUpdate')
-from standardUpdateSlave import standardUpdateDef
+from UpdateDefinitions import standardUpdateDef
 sys.path.insert(0, 'SQL')
 from DatabaseInteraction import DatabaseInteraction 
 import time
@@ -27,7 +27,7 @@ tickerList = dbInt.getAllTickers()
 
 tickerListAssembly = []
 
-targetSize = 50
+targetSize = 20
 
 a = int(len(tickerList)/targetSize) + 1
 for i in range(a):
@@ -36,7 +36,7 @@ for i in range(a):
 
 threads = []
 for i in range(len(tickerListAssembly)):
-    thread = threading.Thread(target = standardUpdateDef, args = (tickerListAssembly[i],i))
+    thread = threading.Thread(target = standardUpdateDef, args = (tickerListAssembly[i],))
     threads.append(thread)
     thread.start()
     
