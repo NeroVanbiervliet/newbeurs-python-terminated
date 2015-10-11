@@ -72,7 +72,7 @@ def calcGains(transactionList,transactionCost,dateList):
         totalGainReal = np.ones(n)
         
         for i in range(len(rawGainList)):
-            totalGainReal[i%n] = totalGainReal[i%n]*(1+rawGainList[i])
+            totalGainReal[i%n] = totalGainReal[i%n]*(1.+rawGainList[i])
 
         avgGain = np.mean(rawGainList)
         yearGain = (1. + avgGain)**(amountOfDays/avgDuration)
