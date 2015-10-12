@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "../Simulator/SimulatorMethod.py", line 14, in <module>
-    startDate = date(int(startDateList[0]),int(startDateList[1]),int(startDateList[2]))
-ValueError: invalid literal for int() with base 10: ''

@@ -42,11 +42,11 @@ if len(argv) > 1:
     print 'endDate:'
     print endDate.strftime("%B %d, %Y")
 else:
-    startDate = date(2008, 1, 1)
-    endDate = date(2010, 7, 1)
+    startDate = date(2010, 1, 1)
+    endDate = date(2015, 7, 1)
     methodString = 'method1'
     stockSelection = 'S%P500'
-    parameters = [0,5]
+    parameters = [3,6]
     
 # TODO simulation description doorkrijgen
 comment = 'Simulator renewed'
@@ -64,7 +64,7 @@ exec('import ' + methodString + ' as method')
 if startDate > endDate:
     print 'start date is bigger than end date, not possible'
     print simDef.endGame()
-    sys.exit
+    sys.exit()
     
 # generate dateList to iterate over
 dateList = simDef.genDateList(startDate,endDate)
