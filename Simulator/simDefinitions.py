@@ -6,7 +6,7 @@ import sys
 import random
 import sys
 sys.path.insert(0, 'SQL')
-#from DatabaseInteraction import DatabaseInteraction 
+from DatabaseInteraction import DatabaseInteraction 
 
 def endGame():
     print 'And Now His Watch is Ended'
@@ -75,7 +75,7 @@ def calcGains(transactionList,transactionCost,dateList):
             totalGainReal[i%n] = totalGainReal[i%n]*(1.+rawGainList[i])
 
         avgGain = np.mean(rawGainList)
-        yearGain = (1. + avgGain)**(amountOfDays/avgDuration)
+        yearGain = (1. + avgGain)**(250./avgDuration)
 
         return [np.mean(totalGainReal)-1, avgGain, yearGain]
     else:
@@ -92,11 +92,11 @@ def genDateList(startDate,endDate):
     return dateList
 
 def genTickerlist(stockSelection):
-    #dbInt = DatabaseInteraction('backtest_real')
-
+    dbInt = DatabaseInteraction('backtest_real')
+    ## NEED: uncomment database dingen
     tickerLimit = 200
-    tickerListTotal = np.loadtxt('data/tickerOverview.txt', delimiter=',', skiprows=0, usecols=(0,), unpack=False,dtype = 'str')
-    #tickerListTotal = dbInt.getTickerList(stockSelection)
+    #tickerListTotal = np.loadtxt('data/tickerOverview.txt', delimiter=',', skiprows=0, usecols=(0,), unpack=False,dtype = 'str')
+    tickerListTotal = dbInt.getTickerList(stockSelection)
 
     tickerListAssembly = []
     a = int(len(tickerListTotal)/tickerLimit) + 1
