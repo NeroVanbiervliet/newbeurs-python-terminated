@@ -27,10 +27,10 @@ tickerList = dbInt.getAllTickers()
 
 tickerListAssembly = []
 
-targetSize = 20
+targetSize = 999999999
 
-a = int(len(tickerList)/targetSize) + 1
-for i in range(a):
+amountOfThreads = int(len(tickerList)/targetSize) + 1
+for i in range(aamountOfThreads):
     tickerListAssembly.append(tickerList[i*targetSize:i*targetSize+targetSize])
 
 
