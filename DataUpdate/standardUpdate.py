@@ -30,7 +30,7 @@ tickerListAssembly = []
 targetSize = 999999999
 
 amountOfThreads = int(len(tickerList)/targetSize) + 1
-for i in range(aamountOfThreads):
+for i in range(amountOfThreads):
     tickerListAssembly.append(tickerList[i*targetSize:i*targetSize+targetSize])
 
 
