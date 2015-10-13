@@ -20,8 +20,9 @@ def standardUpdateDef(tickerList):
     count = 0
     for ticker in tickerList:
         count += 1
-        if count%500==0:
-            time.sleep(10)
+        if count%15==0:
+            time.sleep(120)
+            #TODO:change this
             
         stock = Stock(ticker)
   
