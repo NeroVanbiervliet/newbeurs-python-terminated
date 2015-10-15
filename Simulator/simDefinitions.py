@@ -56,7 +56,7 @@ def calcGains(transactionList,transactionCost,dateList):
         for i in range(len(transactionList)):
             gainTemp = min(max((transactionList[i][6] - transactionList[i][1] - transactionCost)/transactionList[i][1],-0.5),0.5)
             
-            if isinstance(gainTemp, (int, long, float, complex)):
+            if isinstance(gainTemp, (int, long, float, complex)) and (not gainTemp == float('NaN')):
                 duration = transactionList[i][3]
                 type = transactionList[i][4]
                 if type == 'short':
@@ -79,7 +79,7 @@ def calcGains(transactionList,transactionCost,dateList):
         avgGain = np.mean(rawGainList)
         yearGain = (1. + avgGain)**(250./avgDuration)
 
-        return [np.mean(totalGainReal)-1, avgGain, yearGain]
+        return [np.mean(totalGainReal)-1., avgGain, yearGain-1.]
     else:
         return [0,0,0]
     
