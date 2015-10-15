@@ -56,7 +56,7 @@ def calcGains(transactionList,transactionCost,dateList):
         for i in range(len(transactionList)):
             gainTemp = min(max((transactionList[i][6] - transactionList[i][1] - transactionCost)/transactionList[i][1],-0.5),0.5)
             
-            if isinstance(gainTemp, (int, long, float, complex)) and (not gainTemp == float('NaN')):
+            if isinstance(gainTemp, (int, long, float, complex)) and (not np.isnan(gainTemp)):
                 duration = transactionList[i][3]
                 type = transactionList[i][4]
                 if type == 'short':
