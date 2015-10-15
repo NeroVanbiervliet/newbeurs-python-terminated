@@ -55,15 +55,17 @@ def calcGains(transactionList,transactionCost,dateList):
         rawDurationList = []
         for i in range(len(transactionList)):
             gainTemp = min(max((transactionList[i][6] - transactionList[i][1] - transactionCost)/transactionList[i][1],-0.5),0.5)
-            duration = transactionList[i][3]
-            type = transactionList[i][4]
-            if type == 'short':
-                gain = -gainTemp
-            if type == 'long':
-                gain = gainTemp
-                
-            rawGainList.append(gain)
-            rawDurationList.append(duration)
+            
+            if isinstance(gainTemp, (int, long, float, complex)):
+                duration = transactionList[i][3]
+                type = transactionList[i][4]
+                if type == 'short':
+                    gain = -gainTemp
+                if type == 'long':
+                    gain = gainTemp
+                    
+                rawGainList.append(gain)
+                rawDurationList.append(duration)
 
         amountOfDays = len(dateList)/365.*250.
         orderPerDays = len(transactionList)/(amountOfDays)

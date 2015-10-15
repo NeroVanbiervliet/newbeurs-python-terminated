@@ -17,13 +17,9 @@ import re
 from datetime import date
 
 def standardUpdateDef(tickerList):
-    count = 0
+    
     for ticker in tickerList:
-        count += 1
-        if count%15==0:
-            time.sleep(120)
-            #TODO:change this
-            
+        sleep(0.5)
         stock = Stock(ticker)
   
         if os.path.isfile(stock.dataPath):

@@ -31,7 +31,7 @@ if len(argv) > 1:
 
     methodString = argv[3]
     stockSelection = argv[4]
-    parameters = argv[5] 
+    parameters = argv[5].split(' ')
     ID = argv[6]
 
     print argv

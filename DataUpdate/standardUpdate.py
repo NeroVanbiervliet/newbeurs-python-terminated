@@ -27,7 +27,7 @@ tickerList = dbInt.getAllTickers()
 
 tickerListAssembly = []
 
-targetSize = 1000
+targetSize = 9999999
 #TODO: change this target size to 20-100
 
 amountOfThreads = int(len(tickerList)/targetSize) + 1
