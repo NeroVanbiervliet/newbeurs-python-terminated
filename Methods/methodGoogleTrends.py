@@ -78,3 +78,23 @@ def mainSell(date,stockDataDict,tickerList,sellParameters,portfolio):
 ##tickerList = np.loadtxt('../data/tickerOverview.txt', delimiter=',', skiprows=0, usecols=(0,), unpack=False,dtype = 'str')
 ## ##run method
 ##buyList,stockDataDict = main('2015-08-18',{},tickerList)
+
+
+
+## Graph which shows the returns of our strategy versus benchmark (SP500)
+    
+plt.plot(stock.closePrices[:daysInPast])
+dots1x = []
+dots1y = []
+for i in range(len(results)):
+    dots1x.append(results[i][1])
+    dots1y.append(stock.closePrices[results[i][1]])
+    
+plt.scatter(dots1x,dots1y)
+
+plt.show()
+
+
+
+
+                    

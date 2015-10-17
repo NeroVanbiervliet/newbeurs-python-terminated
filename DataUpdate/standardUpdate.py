@@ -12,7 +12,7 @@ import numpy as np
 sys.path.insert(0, 'DataUpdate')
 from UpdateDefinitions import standardUpdateDef
 sys.path.insert(0, 'SQL')
-from DatabaseInteraction import DatabaseInteraction 
+#from DatabaseInteraction import DatabaseInteraction 
 import time
 import threading
 
@@ -20,14 +20,14 @@ def endGame():
     print 'And Now His Watch is Ended'
 
 tStart = time.time()
-dbInt = DatabaseInteraction('backtest_real')
+#dbInt = DatabaseInteraction('backtest_real')
 
-#tickerList = np.loadtxt('data/tickerOverview.txt', delimiter=',', skiprows=0, usecols=(0,), unpack=False,dtype = 'str')
-tickerList = dbInt.getAllTickers()
+tickerList = np.loadtxt('data/tickerOverview.txt', delimiter=',', skiprows=0, usecols=(0,), unpack=False,dtype = 'str')
+#tickerList = dbInt.getAllTickers()
 
 tickerListAssembly = []
 
-targetSize = 500
+targetSize = 100
 #TODO: change this target size to 20-100
 
 amountOfThreads = int(len(tickerList)/targetSize) + 1

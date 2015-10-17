@@ -7,8 +7,8 @@ class DatabaseInteraction:
     """A class to interact with the oak beurs database (c) Nero"""
 
     # variables here declared are class variables, they are common for all objects and each object has a pointer to the same value!
-    userList = ['root','webapp','python']
-    passwordList = ['crvfttngdsntwrk','frmzrtn5894rndm','twpntzvnsbtrdndr']
+    userList = ['root', 'webapp', 'python']
+    passwordList = ['crvfttngdsntwrk', 'frmzrtn5894rndm', 'twpntzvnsbtrdndr']
 
     # constructor
 
@@ -101,10 +101,10 @@ class DatabaseInteraction:
             raise
 
     # adds a stock to a category
-    def addStockToCategory(self,ticker,criterium,value):
+    def addStockToCategory(self, ticker, criterium, value):
 
         query = ("INSERT INTO stockCategory(stock,criterium,value) "
-                 "VALUES ((SELECT id FROM stock WHERE ticker=\'%s\'),\'%s\',\'%s\');") % (ticker,criterium,value)
+                 "VALUES ((SELECT id FROM stock WHERE ticker=\'%s\'),\'%s\',\'%s\');") % (ticker, criterium, value)
 
         try:
             self.executeQuery(query)
@@ -129,11 +129,47 @@ class DatabaseInteraction:
     # returns a list of tickers
     # the stocks moeten aan de condition voldoen
     # de condition wordt beschreven aan de hand van entries in de stockCategory table
-    def getTickerList(self,condition):
+    def getTickerList(self, condition):
 
-        # JOIN <=> INNER JOIN
-        query = ("SELECT ticker FROM stock JOIN stockCategory ON stock.id = stockCategory.stock "
-                 "WHERE %s;") % (condition)
+        query = "SELECT DISTINCT ticker FROM stock STK WHERE "
+        parts = []
+
+        #checken of condition met { of [ begint
+        firstChar = condition[0:1]
+        if firstChar == "[":
+            conditionTrimmed = condition[1:len(condition)-1] # [ en ] er af
+            parts = conditionTrimmed.split(",")
+
+            for part in parts:
+                query += "STK.ticker='%s' OR " % part
+
+            query = query[0:len(query)-4] # laaste OR weghalen
+
+        elif firstChar == "{":
+            parts = condition.split("}")
+            parts = parts[:len(parts)-1]
+
+            pieces = []
+            blocks = []
+
+            for part in parts:
+                query += "("
+                partTrimmed = part[1:len(part)] # { er af halen
+                blocks = partTrimmed.split(",")
+
+                for block in blocks:
+                    pieces = block.split("=")
+
+                    query += "EXISTS (SELECT * FROM stockCategory STC WHERE STC.stock=STK.id AND STC.criterium='%s' AND STC.value='%s') AND " % (pieces[0],pieces[1])
+
+                query = query[0:len(query)-5] # laaste AND weghalen
+                query += ") OR "
+
+            query = query[0:len(query)-4] # laaste OR weghalen
+
+        else:
+
+            raise Exception('stock selection input is not correct')
 
         [columnNames, queryResult] = self.executeQuery(query)
 
@@ -196,7 +232,7 @@ class DatabaseInteraction:
     # users must be added in the web application, not in python
     def addUser(self, userName, passwordHashed):
 
-		# TODO hashing hier doen, passwoord als argument meegeven
+        # TODO hashing hier doen, passwoord als argument meegeven
 
         query = ("INSERT INTO user(name, passwordHashed) "
                  "VALUES (\'%s\',\'%s\');") % (userName, passwordHashed)
@@ -207,8 +243,6 @@ class DatabaseInteraction:
             print "OAK_ERROR: Creatie van nieuwe user in de database mislukt. UserName bestaat al in database"
             # exception herthrowen TODO eigen exception throwen met message hierboven
             raise
-
-
 
     # adds a strategy to the database
     # TODO also add entry in strategyEditHistory
@@ -233,7 +267,7 @@ class DatabaseInteraction:
 
         query = ("UPDATE simulation "
                  "SET pid='%s' "
-                 "WHERE id=%s;") % (simulationPid,simulationId)
+                 "WHERE id=%s;") % (simulationPid, simulationId)
 
         try:
             self.executeQuery(query)
@@ -243,35 +277,35 @@ class DatabaseInteraction:
             raise
 
     #
-    def finaliseSimulation(self,simulationId,status,totalGain,totalReturn):
+    def finaliseSimulation(self, simulationId, status, totalGain, totalReturn):
 
-	# checken of de status niet al stopped is
-	# TODO kan netter met een executeQuery en een WHERE id = ...
-        
-		[columnNames, dataRows] = self.getAllTableEntries("simulation")
-		for dataRow in dataRows:
-			# juiste rij gevonden, int() nodig omdat simulationId komt van bash script en dat is dan een string, geen int!  
-			if dataRow[0] == int(simulationId):            
-				if dataRow[9] == "stopped":
-					status = "stopped"
-				break
+        # checken of de status niet al stopped is
+        # TODO kan netter met een executeQuery en een WHERE id = ...
 
-		query = ("UPDATE simulation "
-				"SET status='%s', totalGain='%s', totalReturn='%s', timestampEnd=NOW()"
-				"WHERE id='%s';") % (status,totalGain,totalReturn,simulationId)
+        [columnNames, dataRows] = self.getAllTableEntries("simulation")
+        for dataRow in dataRows:
+            # juiste rij gevonden, int() nodig omdat simulationId komt van bash script en dat is dan een string, geen int!
+            if dataRow[0] == int(simulationId):
+                if dataRow[9] == "stopped":
+                    status = "stopped"
+                break
 
-		try:
-			self.executeQuery(query)
-		except _mysql_exceptions:
-			print "OAK_ERROR: status updaten van de simulation in de database mislukt. Waarschijnlijk bestaat het sim id niet in de db"
-			# exception herthrowen TODO eigen exception throwen met message hierboven
-			raise
+        query = ("UPDATE simulation "
+                 "SET status='%s', totalGain='%s', totalReturn='%s', timestampEnd=NOW()"
+                 "WHERE id='%s';") % (status, totalGain, totalReturn, simulationId)
+
+        try:
+            self.executeQuery(query)
+        except _mysql_exceptions:
+            print "OAK_ERROR: status updaten van de simulation in de database mislukt. Waarschijnlijk bestaat het sim id niet in de db"
+            # exception herthrowen TODO eigen exception throwen met message hierboven
+            raise
 
     # adds a data source
     def addDataSource(self, scriptFile, description):
 
         query = ("INSERT INTO dataStatus(script,description) "
-                 "VALUES (\'%s\',\'%s\');") % (scriptFile,description)
+                 "VALUES (\'%s\',\'%s\');") % (scriptFile, description)
 
         try:
             self.executeQuery(query)
