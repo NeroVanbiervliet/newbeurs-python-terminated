@@ -69,7 +69,7 @@ def calcGains(transactionList,transactionCost,dateList):
                 rawGainList.append(gain)
                 rawDurationList.append(duration)
                 tenDayGain.append((1+gain)**(10./duration)-1)
-                tenDayLogGain.append(np.log10((1+gain)**(10./duration)-1))
+                tenDayLogGain.append(np.log10((1+gain)**(10./duration)))
 
         amountOfDays = len(dateList)/365.*250.
         orderPerDays = len(transactionList)/(amountOfDays)
@@ -81,7 +81,7 @@ def calcGains(transactionList,transactionCost,dateList):
             totalGainReal[i%n] = totalGainReal[i%n]*(1.+rawGainList[i])
 
         tenDayAvgGain = np.mean(tenDayGain)
-        tenDayLogAvgGain = 10.**np.mean(tenDayLogGain)
+        tenDayLogAvgGain = 10.**(np.mean(tenDayLogGain))-1.
         yearGain = (1. + tenDayAvgGain)**(250./10.)
         yearLogGain = (1. + tenDayLogAvgGain)**(250./10.)
 
