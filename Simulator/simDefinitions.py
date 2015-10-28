@@ -40,7 +40,7 @@ def marketSim(date,stockDataDict):
             if date in allDates:
                 buyPrice = stockDataDict[ticker].closePricesDict[date]
                 buyDate = date
-                duration = 1
+                duration = 10
                 index = np.where(allDates==buyDate)[0][0]
                 sellDate = allDates[index - duration]
                 sellPrice = stockDataDict[ticker].closePricesDict[sellDate]
@@ -54,6 +54,7 @@ def calcGains(transactionList,transactionCost,dateList):
         rawGainList = []
         rawDurationList = []
         tenDayGain = []
+        tenDayLogGain = []
         for i in range(len(transactionList)):
             gainTemp = min(max((transactionList[i][6] - transactionList[i][1] - transactionCost)/transactionList[i][1],-0.5),0.5)
             
@@ -68,6 +69,7 @@ def calcGains(transactionList,transactionCost,dateList):
                 rawGainList.append(gain)
                 rawDurationList.append(duration)
                 tenDayGain.append((1+gain)**(10./duration)-1)
+                tenDayLogGain.append(np.log10((1+gain)**(10./duration)-1))
 
         amountOfDays = len(dateList)/365.*250.
         orderPerDays = len(transactionList)/(amountOfDays)
@@ -79,11 +81,13 @@ def calcGains(transactionList,transactionCost,dateList):
             totalGainReal[i%n] = totalGainReal[i%n]*(1.+rawGainList[i])
 
         tenDayAvgGain = np.mean(tenDayGain)
+        tenDayLogAvgGain = 10.**np.mean(tenDayLogGain)
         yearGain = (1. + tenDayAvgGain)**(250./10.)
+        yearLogGain = (1. + tenDayLogAvgGain)**(250./10.)
 
-        return [np.mean(totalGainReal)-1., tenDayAvgGain, yearGain-1.]
+        return [np.mean(totalGainReal)-1., tenDayAvgGain, tenDayLogAvgGain, yearGain-1., yearLogGain -1.]
     else:
-        return [0,0,0]
+        return [0,0,0,0,0]
     
 def genDateList(startDate,endDate):
 
