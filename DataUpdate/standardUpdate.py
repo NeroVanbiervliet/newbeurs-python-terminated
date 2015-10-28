@@ -27,8 +27,8 @@ tickerList = np.loadtxt('data/tickerOverview.txt', delimiter=',', skiprows=0, us
 
 tickerListAssembly = []
 
-targetSize = 100
-#TODO: change this target size to 20-100
+targetSize = 500
+#TODO: change this target size to 20-500
 
 amountOfThreads = int(len(tickerList)/targetSize) + 1
 for i in range(amountOfThreads):
