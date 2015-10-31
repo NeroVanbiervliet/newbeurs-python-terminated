@@ -19,6 +19,27 @@ class Stock:
         self.lengthLimit = 5000
         self.status = True
         
+##        #load price data from txt file
+##        if os.path.isfile(self.dataPath):
+##            dummy = np.loadtxt(self.dataPath, delimiter=',', skiprows=1, usecols=(1,2,3,4,5,6), unpack=False)
+##            
+##            self.dates = np.loadtxt(self.dataPath, delimiter=',', skiprows=1, usecols=(0,), unpack=False,dtype = 'str')[:self.lengthLimit]
+##            # Normal lists
+##            # close price adjusted is used
+##            self.openPrices = dummy[:,0][:self.lengthLimit]
+##            self.highPrices = dummy[:,1][:self.lengthLimit]
+##            self.lowPrices = dummy[:,2][:self.lengthLimit]
+##            self.closePrices = dummy[:,5][:self.lengthLimit]
+##            self.volume = dummy[:,4][:self.lengthLimit]
+##            # Dictionaries
+##            self.openPricesDict = dict(zip(self.dates, dummy[:,0][:self.lengthLimit]))
+##            self.highPricesDict = dict(zip(self.dates, dummy[:,1][:self.lengthLimit]))
+##            self.lowPricesDict = dict(zip(self.dates, dummy[:,2][:self.lengthLimit]))
+##            self.closePricesDict = dict(zip(self.dates, dummy[:,5][:self.lengthLimit]))
+##            self.volumeDict = dict(zip(self.dates, dummy[:,4][:self.lengthLimit]))
+##        else:
+##            print 'Data for ' + self.name + ' not available'
+
     def generateMACD(self):
         if os.path.isfile(self.dataPath):
             dummy = np.loadtxt(self.dataPath, delimiter=',', skiprows=1, usecols=(1,2,3,4,5,6), unpack=False)
@@ -42,7 +63,7 @@ class Stock:
 
     def generateGoogleTrend(self):
         if os.path.isfile(self.dataPath):
-            dummy = np.loadtxt(self.dataPath, delimiter=',', skiprows=1, usecols=(6,), unpack=False)
+            dummy = np.loadtxt(self.dataPath, delimiter=',', skiprows=1, usecols=(1,2,3,4,5,6), unpack=False)
             self.dates = np.loadtxt(self.dataPath, delimiter=',', skiprows=1, usecols=(0,), unpack=False,dtype = 'str')[:self.lengthLimit]
             # Normal lists
             # close price adjusted is used
@@ -55,19 +76,6 @@ class Stock:
             self.GTScore,self.datesTrendScore = GoogleTrend.Score(self.hits,self.datesTrend)
             self.GTScoreDict = dict(zip(self.datesTrendScore, self.GTScore))
 
-        else:
-            print 'Data for ' + self.name + ' not available'
-            self.status = False
-        
-    def generateTrend(self):
-        if os.path.isfile(self.dataPath):
-            dummy = np.loadtxt(self.dataPath, delimiter=',', skiprows=1, usecols=(6,), unpack=False)
-            self.dates = np.loadtxt(self.dataPath, delimiter=',', skiprows=1, usecols=(0,), unpack=False,dtype = 'str')[:self.lengthLimit]
-            # Normal lists
-            # close price adjusted is used
-            self.closePrices = dummy[:self.lengthLimit]
-            # Dictionaries
-            self.closePricesDict = dict(zip(self.dates, dummy[:self.lengthLimit]))
         else:
             print 'Data for ' + self.name + ' not available'
             self.status = False

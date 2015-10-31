@@ -18,8 +18,8 @@ def mainBuy(date,stockDataDict,tickerList,parameters):
         Output: buyList = zegt welke aandelen gekocht worden en voor hoe lang
         """
 
-    limitScore = eval(parameters[0])
-    duration = eval(parameters[1])
+    limitScore = parameters[0]
+    duration = parameters[1]
     
     buyList = []
     

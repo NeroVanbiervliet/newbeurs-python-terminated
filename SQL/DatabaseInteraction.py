@@ -113,6 +113,20 @@ class DatabaseInteraction:
             # exception herthrowen TODO eigen exception throwen met message hierboven?
             raise
 
+    # edits the value of a stockCategory
+    def editStockCategory(self, ticker, criterium, value):
+
+        query = ("UPDATE stockCategory "
+                 "SET value='%s' "
+                 "WHERE stock=(SELECT id FROM stock WHERE ticker=\'%s\') AND criterium='%s';") % (value, ticker, criterium)
+
+        try:
+            self.executeQuery(query)
+        except _mysql_exceptions.IntegrityError:
+            print "OAK_ERROR: Creatie van nieuwe stockCategory entry in de database mislukt. Mogelijk probleem: ticker bestaat niet in database"
+            # exception herthrowen TODO eigen exception throwen met message hierboven?
+            raise
+
     # returns a list containing all tickers present in the stocks table
     def getAllTickers(self):
 
