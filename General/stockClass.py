@@ -63,22 +63,23 @@ class Stock:
 
 	def generatePID(self):
 		 if os.path.isfile(self.dataPath):
-            dummy = np.loadtxt(self.dataPath, delimiter=',', skiprows=1, usecols=(1,2,3,4,5,6), unpack=False)
-            self.dates = np.loadtxt(self.dataPath, delimiter=',', skiprows=1, usecols=(0,), unpack=False,dtype = 'str')[:self.lengthLimit]
-            # Normal lists
-            # close price adjusted is used
-            self.closePrices = dummy[:,5][:self.lengthLimit]
-            # dictionary
-            self.closePricesDict = dict(zip(self.dates, closePrices))	
-            # dailyGain calculation
+			dummy = np.loadtxt(self.dataPath, delimiter=',', skiprows=1, usecols=(1,2,3,4,5,6), unpack=False)
+			self.dates = np.loadtxt(self.dataPath, delimiter=',', skiprows=1, usecols=(0,), unpack=False,dtype = 'str')[:self.lengthLimit]
+			# Normal lists
+			# close price adjusted is used
+			self.closePrices = dummy[:,5][:self.lengthLimit]
+			# dictionary
+			self.closePricesDict = dict(zip(self.dates, closePrices))	
+			# dailyGain calculation
 			self.closePricesArray = np.array(self.closePrices, dtype='f')			
 			self.dailyGainArray = np.divide(closePricesArray[0:len(closePricesArray)-1],closePricesArray[1:len(a)])
 			# dictionary
 			self.dailyGainDict = dict(zip(self.dates, self.dailyGainArray))	
-	
-        else:
-            print 'Data for ' + self.name + ' not available'
-            self.status = False
+
+# indentation problem
+#		else:
+		#	print 'Data for ' + self.name + ' not available'
+		#	self.status = False
 
     def generateGoogleTrend(self):
         if os.path.isfile(self.dataPath):
