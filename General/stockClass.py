@@ -75,6 +75,7 @@ class Stock:
             self.dailyGainArray = np.divide(self.closePricesArray[0:len(self.closePricesArray)-1],self.closePricesArray[1:len(self.closePricesArray)])
             # dictionary
             self.dailyGainDict = dict(zip(self.dates[0:len(self.closePricesArray)-1], self.dailyGainArray))
+            self.dates = self.dates[0:len(self.closePricesArray)-1]
             
         else:
             print 'Data for ' + self.name + ' not available'
