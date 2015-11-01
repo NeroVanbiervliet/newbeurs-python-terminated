@@ -18,7 +18,7 @@ def mainBuy(date,stockDataDict,tickerList,buyParameters):
         Output: buyList = zegt welke aandelen gekocht worden en voor hoe lang
         """
 
-    limitScore = buyParameters[0]
+    notyetdefined = buyParameters[0]
     duration = buyParameters[1]
     
     buyList = []
