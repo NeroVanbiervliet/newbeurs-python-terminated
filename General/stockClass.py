@@ -69,10 +69,10 @@ class Stock:
             # close price adjusted is used
             self.closePrices = dummy[:,5][:self.lengthLimit]
             # dictionary
-            self.closePricesDict = dict(zip(self.dates, closePrices))	
+            self.closePricesDict = dict(zip(self.dates, self.closePrices))	
             # dailyGain calculation
             self.closePricesArray = np.array(self.closePrices, dtype='f')			
-            self.dailyGainArray = np.divide(closePricesArray[0:len(closePricesArray)-1],closePricesArray[1:len(a)])
+            self.dailyGainArray = np.divide(self.closePricesArray[0:len(self.closePricesArray)-1],self.closePricesArray[1:len(a)])
             # dictionary
             self.dailyGainDict = dict(zip(self.dates, self.dailyGainArray))
             
