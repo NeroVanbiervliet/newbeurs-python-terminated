@@ -72,7 +72,7 @@ class Stock:
             self.closePricesDict = dict(zip(self.dates, self.closePrices))	
             # dailyGain calculation
             self.closePricesArray = np.array(self.closePrices, dtype='f')			
-            self.dailyGainArray = np.divide(self.closePricesArray[0:len(self.closePricesArray)-1],self.closePricesArray[1:len(a)])
+            self.dailyGainArray = np.divide(self.closePricesArray[0:len(self.closePricesArray)-1],self.closePricesArray[1:len(self.closePricesArray)])
             # dictionary
             self.dailyGainDict = dict(zip(self.dates, self.dailyGainArray))
             
