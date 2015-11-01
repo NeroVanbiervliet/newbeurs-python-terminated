@@ -28,7 +28,7 @@ def mainBuy(date,stockDataDict,tickerList,buyParameters):
         #check if data is available for that date
         if stockDataDict[ticker].status:
             allDates = stockDataDict[ticker].dates
-            if date in allDates and date in stockDataDict[ticker].datesTrendScore:
+            if date in allDates:
                 
                 ## HIER Methode inserten
                 # Voorwaarde om te kopen en toevoegen aan de buyList
