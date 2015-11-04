@@ -28,8 +28,7 @@ def mainBuy(date,stockDataDict,tickerList,buyParameters):
         #check if data is available for that date
         if stockDataDict[ticker].status:
             allDates = stockDataDict[ticker].dates
-            if date in allDates:
-                
+            if date in allDates:      
                 ## HIER Methode inserten
                 # Voorwaarde om te kopen en toevoegen aan de buyList
                 if stockDataDict[ticker].dailyGainDict[date] > 1.06: # 6 procent verschil met vorige dag
@@ -51,6 +50,8 @@ def mainSell(date,stockDataDict,tickerList,sellParameters,portfolio):
         buyPrice = portfolio[i][1]
         buyDate = portfolio[i][2]
         duration = portfolio[i][3]
+        type = portfolio[i][4]
+        score = portfolio[i][5]
         allDates = stockDataDict[ticker].dates
         
         ##Selldate en sellprice hier
@@ -60,7 +61,7 @@ def mainSell(date,stockDataDict,tickerList,sellParameters,portfolio):
             if (index1 - index2) >= duration:
                 sellDate = date
                 sellPrice = stockDataDict[ticker].closePricesDict[sellDate]
-                transactionList.append([ticker,buyPrice,buyDate,duration,type,portfolio[i][4],sellPrice,sellDate])
+                transactionList.append([ticker,buyPrice,buyDate,duration,type,score,sellPrice,sellDate])
                 indices.append(i)
                    
     return transactionList,indices

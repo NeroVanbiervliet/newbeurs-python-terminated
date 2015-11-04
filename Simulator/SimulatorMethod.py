@@ -44,9 +44,9 @@ if len(argv) > 1:
 else:
     startDate = date(2010, 1, 1)
     endDate = date(2015, 7, 1)
-    methodString = 'method1'
+    methodString = 'methodPID'
     stockSelection = 'S%P500'
-    parameters = [3,6]
+    parameters = [0,6]
     
 # TODO simulation description doorkrijgen
 comment = 'Simulator renewed'

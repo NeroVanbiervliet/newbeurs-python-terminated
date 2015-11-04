@@ -101,7 +101,7 @@ def genDateList(startDate,endDate):
 
 def genTickerlist(stockSelection):
     dbInt = DatabaseInteraction('backtest_real')
-    ## NEED: uncomment database dingen
+    
     tickerLimit = 200
     #tickerListTotal = np.loadtxt('data/tickerOverview.txt', delimiter=',', skiprows=0, usecols=(0,), unpack=False,dtype = 'str')
     tickerListTotal = dbInt.getTickerList(stockSelection)

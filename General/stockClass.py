@@ -16,7 +16,7 @@ class Stock:
         self.market = 'lol'
         self.category = []
         self.MACD_parameters = [12,26,9]
-        self.lengthLimit = 5000
+        self.lengthLimit = 2000
         self.status = True
         
 ##        #load price data from txt file
