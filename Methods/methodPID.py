@@ -11,15 +11,15 @@ def generateData(tickerList):
             
     return stockDataDict
 
-def mainBuy(date,stockDataDict,tickerList,buyParameters):
+def mainBuy(date,stockDataDict,tickerList,parameters):
     """ Dit is methode 1 die aandelen koopt en verkoopt onder bepaalde voorwaardes
         Input: date = welke dag geanalyseerd moet worden
                
         Output: buyList = zegt welke aandelen gekocht worden en voor hoe lang
         """
 
-    notyetdefined = buyParameters[0]
-    duration = buyParameters[1]
+    notyetdefined = eval(parameters[0])
+    duration = eval(parameters[1])
     
     buyList = []
     
@@ -40,7 +40,7 @@ def mainBuy(date,stockDataDict,tickerList,buyParameters):
 
     return buyList
 
-def mainSell(date,stockDataDict,tickerList,sellParameters,portfolio):
+def mainSell(date,stockDataDict,tickerList,parameters,portfolio):
 
     transactionList = []
     indices = []
