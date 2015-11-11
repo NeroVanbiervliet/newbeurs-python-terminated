@@ -7,7 +7,7 @@ def generateData(tickerList):
     stockDataDict = {}
     for ticker in tickerList:
             stockDataDict[ticker] = Stock(ticker)
-            Stock.generatePID(stockDataDict[ticker])
+            Stock.generatePID()
             
     return stockDataDict
 
@@ -32,6 +32,16 @@ def mainBuy(date,stockDataDict,tickerList,parameters):
                 ## HIER Methode inserten
                 # Voorwaarde om te kopen en toevoegen aan de buyList
                 if stockDataDict[ticker].dailyGainDict[date] > 1.06: # 6 procent verschil met vorige dag
+
+			       # make range of prices from days around buy date			
+                   currentPricesRegionBuy = []				
+
+                   for j in range(0,15):
+                       currentPricesRegionBuy.append(stockDataDict[ticker].closePricesDict[date-10+j])
+	
+                   with open("/home/nero/beurs_dump/pid.txt","a") as dataFile:
+                       dataFile.write(currentPricesBuy + "\n")
+
                    score = stockDataDict[ticker].dailyGainDict[date]
                    price = stockDataDict[ticker].closePricesDict[date]
                    #date = stockDataDict[ticker].dates[entry]
