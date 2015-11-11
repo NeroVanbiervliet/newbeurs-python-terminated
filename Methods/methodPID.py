@@ -40,7 +40,7 @@ def mainBuy(date,stockDataDict,tickerList,parameters):
                    currentDateIndex = np.where(allDates==date)[0][0]
 
                    for j in range(0,15):
-                       if (currentDateIndex-5+j)>0 and (currentDateIndex-5+j)<allDates.size:
+                       if (currentDateIndex-10+j)>0 and (currentDateIndex-10+j)<allDates.size:
                            currentPricesRegionBuy.append(stockDataDict[ticker].closePricesDict[allDates[currentDateIndex-10+j]])
 	
                    with open("/home/nero/beurs_dump/pid.txt","a") as dataFile:
