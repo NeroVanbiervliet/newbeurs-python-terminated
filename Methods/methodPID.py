@@ -7,7 +7,7 @@ def generateData(tickerList):
     stockDataDict = {}
     for ticker in tickerList:
             stockDataDict[ticker] = Stock(ticker)
-            Stock.generatePID()
+            Stock.generatePID(stockDataDict[ticker])
             
     return stockDataDict
 
