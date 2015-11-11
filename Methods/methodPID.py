@@ -37,13 +37,13 @@ def mainBuy(date,stockDataDict,tickerList,parameters):
                    currentPricesRegionBuy = []				
 
                    # get index of current date in alldates
-                   currentDateIndex = np.where(allDates==date)[0][0]
+                   currentDateIndex = np.where(allDates==date)[0][0]x
 
                    for j in range(0,15):
                        currentPricesRegionBuy.append(stockDataDict[ticker].closePricesDict[allDates[currentDateIndex-10+j]])
 	
                    with open("/home/nero/beurs_dump/pid.txt","a") as dataFile:
-                       dataFile.write(currentPricesBuy + "\n")
+                       dataFile.write(currentPricesRegionBuy + "\n")
 
                    score = stockDataDict[ticker].dailyGainDict[date]
                    price = stockDataDict[ticker].closePricesDict[date]
