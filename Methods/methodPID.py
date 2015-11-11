@@ -37,7 +37,7 @@ def mainBuy(date,stockDataDict,tickerList,parameters):
                    currentPricesRegionBuy = []				
 
                    # get index of current date in alldates
-                   currentDateIndex = np.where(allDates=date)
+                   currentDateIndex = np.where(allDates==date)[0][0]
 
                    for j in range(0,15):
                        currentPricesRegionBuy.append(stockDataDict[ticker].closePricesDict[allDates[currentDateIndex-10+j]])
