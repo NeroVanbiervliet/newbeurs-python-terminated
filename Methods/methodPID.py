@@ -36,8 +36,11 @@ def mainBuy(date,stockDataDict,tickerList,parameters):
 			       # make range of prices from days around buy date			
                    currentPricesRegionBuy = []				
 
+                   # get index of current date in alldates
+                   currentDateIndex = allDates.index(date)
+
                    for j in range(0,15):
-                       currentPricesRegionBuy.append(stockDataDict[ticker].closePricesDict[date-10+j])
+                       currentPricesRegionBuy.append(stockDataDict[ticker].closePricesDict[allDates[currentDateIndex-10+j]])
 	
                    with open("/home/nero/beurs_dump/pid.txt","a") as dataFile:
                        dataFile.write(currentPricesBuy + "\n")
