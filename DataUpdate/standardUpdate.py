@@ -14,7 +14,6 @@ from UpdateDefinitions import standardUpdateDef
 sys.path.insert(0, 'SQL')
 #from DatabaseInteraction import DatabaseInteraction 
 import time
-import threading
 
 def endGame():
     print 'And Now His Watch is Ended'

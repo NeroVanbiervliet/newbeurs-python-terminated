@@ -1,5 +1,4 @@
 import numpy as np
-import random
 
 def Value(closePrices,period1,period2):
 

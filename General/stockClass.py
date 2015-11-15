@@ -5,6 +5,8 @@ sys.path.insert(0, 'Indicators/MACD')
 import mainMACD as MACD
 sys.path.insert(0, 'Indicators/GoogleTrend')
 import mainGoogleTrend as GoogleTrend
+sys.path.insert(0, 'Indicators/Aroon')
+import mainAroon as Aroon
 import matplotlib.pyplot as plt
 
 class Stock:
@@ -16,6 +18,7 @@ class Stock:
         self.market = 'lol'
         self.category = []
         self.MACD_parameters = [12,26,9]
+        self.AroonParameters = [20]
         self.lengthLimit = 2000
         self.status = True
         
@@ -54,8 +57,8 @@ class Stock:
             self.MACDiDict = dict(zip(self.dates[:len(self.MACDi)], self.MACDi))
             self.MACDScorei = MACD.Score(self.MACDi,self.closePrices,self.MACD_parameters[2])
             self.MACDScoreiDict = dict(zip(self.dates[:len(self.MACDScorei)], self.MACDScorei))
-            self.MACDSignali = MACD.SignalLine(self.MACDi,self.MACD_parameters[2])
-            self.MACDSignaliDict = dict(zip(self.dates[:len(self.MACDSignali)], self.MACDSignali))
+            #self.MACDSignali = MACD.SignalLine(self.MACDi,self.MACD_parameters[2])
+            #self.MACDSignaliDict = dict(zip(self.dates[:len(self.MACDSignali)], self.MACDSignali))
 
         else:
             print 'Data for ' + self.name + ' not available'
@@ -100,3 +103,25 @@ class Stock:
             print 'Data for ' + self.name + ' not available'
             self.status = False
         
+    def generateTechnicalAnalysis1(self):
+        if os.path.isfile(self.dataPath):
+            dummy = np.loadtxt(self.dataPath, delimiter=',', skiprows=1, usecols=(1,2,3,4,5,6), unpack=False)
+            self.dates = np.loadtxt(self.dataPath, delimiter=',', skiprows=1, usecols=(0,), unpack=False,dtype = 'str')[:self.lengthLimit]
+            # Normal lists
+            # close price adjusted is used
+            self.closePrices = dummy[:,5][:self.lengthLimit]
+            self.closePricesDict = dict(zip(self.dates, dummy[:,5][:self.lengthLimit]))
+            ## Generate values for MACD
+            MACD = MACD.Value(self.closePrices,self.MACD_parameters[0],self.MACD_parameters[1])
+            self.MACDScorei = MACD.Score(MACD,self.closePrices,self.MACD_parameters[2])
+            self.MACDScoreiDict = dict(zip(self.dates[:len(self.MACDScorei)], self.MACDScorei))
+            ## Generate values for Aroon
+            AroonUp,AroonDown = Aroon.Value(self.closePrices,self.AroonParameters[0])
+            self.AroonTiming = Aroon.Timing(AroonUp,AroonDown)
+            self.AroonTimingDict = dict(zip(self.dates[:len(self.AroonTiming)], self.AroonTiming))
+            ## Generate Values for On Balance Volume
+
+            self.dates2 = self.dates[:len(self.AroonTiming)][:len(self.MACDScorei)]
+        else:
+            print 'Data for ' + self.name + ' not available'
+            self.status = False
