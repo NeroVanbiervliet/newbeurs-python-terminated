@@ -8,18 +8,18 @@ def Value(closePrices,period1):
     maxEntry = 9999
     minEntry = 9999
 
-    for i in range(len(stockClose)-period1):
-        j = len(stockClose)-period1-1-i
+    for i in range(len(closePrices)-period1):
+        j = len(closePrices)-period1-1-i
         
-        if stockClose[j] > max(stockClose[j+1:j+1+period1]):
-            maxValue = stockClose[j]
+        if closePrices[j] > max(closePrices[j+1:j+1+period1]):
+            maxValue = closePrices[j]
             maxEntry = j
-        if stockClose[j] < min(stockClose[j+1:j+1+period1]):
-            minValue = stockClose[j]
+        if closePrices[j] < min(closePrices[j+1:j+1+period1]):
+            minValue = closePrices[j]
             minEntry = j
             
-        AroonUpValue = (period-(maxEntry-j))/float(period1)*100.
-        AroonDownValue = (period-(minEntry-j))/float(period1)*100.
+        AroonUpValue = (period1-(maxEntry-j))/float(period1)*100.
+        AroonDownValue = (period1-(minEntry-j))/float(period1)*100.
         
         AroonUp.append(max(AroonUpValue,0))
         AroonDown.append(max(AroonDownValue,0))

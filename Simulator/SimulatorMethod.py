@@ -44,12 +44,12 @@ if len(argv) > 1:
 else:
     startDate = date(2010, 1, 1)
     endDate = date(2015, 7, 1)
-    methodString = 'methodPID'
+    methodString = 'methodTA1'
     stockSelection = 'S%P500'
-    parameters = [0,6]
+    parameters = [str(30),str(3),str(0.02)]
     
 # TODO simulation description doorkrijgen
-comment = 'Simulator renewed'
+comment = 'Simulator Technical Analysis'
 
 ### ###
 
@@ -80,6 +80,7 @@ transactionListRandom = []
 stockCount = 0
 
 for tickerList in tickerListAssembly:
+    
     stockCount += len(tickerList)
     portfolio = []
     #money = 10000. 

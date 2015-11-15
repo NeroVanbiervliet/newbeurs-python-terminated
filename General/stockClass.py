@@ -7,6 +7,8 @@ sys.path.insert(0, 'Indicators/GoogleTrend')
 import mainGoogleTrend as GoogleTrend
 sys.path.insert(0, 'Indicators/Aroon')
 import mainAroon as Aroon
+sys.path.insert(0, 'Indicators/BaertIndicator')
+import mainBaert as Baert
 import matplotlib.pyplot as plt
 
 class Stock:

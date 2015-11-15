@@ -19,7 +19,7 @@ def mainBuy(date,stockDataDict,tickerList,parameters):
         """
 
     
-    duration = eval(parameters[0]) #6
+    maxDuration = eval(parameters[0]) #30
     limitScoreMACD = eval(parameters[1]) #3
     
     buyList = []
@@ -33,19 +33,17 @@ def mainBuy(date,stockDataDict,tickerList,parameters):
 
                 ## HIER Methode inserten
                 # Voorwaarde om te kopen en toevoegen aan de buyList
-                if stockDataDict[ticker].MACDScoreiDict[date] > limitScore and stockDataDict[ticker].AroonTimingDict[date] > 0:
+                if stockDataDict[ticker].MACDScoreiDict[date] > limitScoreMACD and stockDataDict[ticker].AroonTimingDict[date] > 1:
                    score = [stockDataDict[ticker].MACDScoreiDict[date],stockDataDict[ticker].AroonTimingDict[date]]
                    price = stockDataDict[ticker].closePricesDict[date]
-                   #date = stockDataDict[ticker].dates[entry]
                    type = 'long'
-                   buyList.append([ticker,price,date,duration,type,score])
+                   buyList.append([ticker,price,date,maxDuration,type,score])
 
-                if stockDataDict[ticker].MACDScoreiDict[date] < -limitScore and stockDataDict[ticker].AroonTimingDict[date] < 0:
+                if stockDataDict[ticker].MACDScoreiDict[date] < -limitScoreMACD and stockDataDict[ticker].AroonTimingDict[date] < -1:
                    score = [stockDataDict[ticker].MACDScoreiDict[date],stockDataDict[ticker].AroonTimingDict[date]]
                    price = stockDataDict[ticker].closePricesDict[date]
-                   #date = stockDataDict[ticker].dates[entry]
                    type = 'short'
-                   buyList.append([ticker,price,date,duration,type,score])
+                   buyList.append([ticker,price,date,maxDuration,type,score])
 
     return buyList
 
@@ -53,24 +51,49 @@ def mainSell(date,stockDataDict,tickerList,parameters,portfolio):
 
     transactionList = []
     indices = []
+
+    limitSell = eval(parameters[2]) #0.02
     
     for i in range(len(portfolio)):
         ticker = portfolio[i][0]
         buyPrice = portfolio[i][1]
         buyDate = portfolio[i][2]
-        duration = portfolio[i][3]
+        maxDuration = portfolio[i][3]
         type = portfolio[i][4]
         score = portfolio[i][5]
-        allDates = stockDataDict[ticker].dates
+        allDates2 = stockDataDict[ticker].dates2
         
+        sell = False
         ##Selldate en sellprice hier
-        if date in allDates:
-            index1 = np.where(allDates==buyDate)[0][0]
-            index2 = np.where(allDates==date)[0][0]
-            if (index1 - index2) >= duration:
+        if date in allDates2:
+            ## Sell method hier
+            index1 = np.where(allDates2==buyDate)[0][0]
+            index2 = np.where(allDates2==date)[0][0]
+
+            if type == 'long':
+                if stockDataDict[ticker].AroonTimingDict[date] < 0:
+                    sell = True
+                if stockDataDict[ticker].MACDScoreiDict[date] < 0:
+                    sell = True
+                if (index1 - index2) > maxDuration:
+                    sell = True
+                if stockDataDict[ticker].closePrices[index2] < max(stockDataDict[ticker].closePrices[index2:index1+1])*(1-limitSell):
+                    sell = True
+                    
+            if type == 'short':
+                if stockDataDict[ticker].AroonTimingDict[date] > 0:
+                    sell = True
+                if stockDataDict[ticker].MACDScoreiDict[date] > 0:
+                    sell = True
+                if (index1 - index2) > maxDuration:
+                    sell = True
+                if stockDataDict[ticker].closePrices[index2] > min(stockDataDict[ticker].closePrices[index2:index1+1])*(1+limitSell):
+                    sell = True
+            
+            if sell:
                 sellDate = date
                 sellPrice = stockDataDict[ticker].closePricesDict[sellDate]
-                transactionList.append([ticker,buyPrice,buyDate,duration,type,score,sellPrice,sellDate])
+                transactionList.append([ticker,buyPrice,buyDate,maxDuration,type,score,sellPrice,sellDate])
                 indices.append(i)
                    
     return transactionList,indices
