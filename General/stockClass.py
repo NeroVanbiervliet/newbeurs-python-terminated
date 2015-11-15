@@ -112,8 +112,8 @@ class Stock:
             self.closePrices = dummy[:,5][:self.lengthLimit]
             self.closePricesDict = dict(zip(self.dates, dummy[:,5][:self.lengthLimit]))
             ## Generate values for MACD
-            MACD = MACD.Value(self.closePrices,self.MACD_parameters[0],self.MACD_parameters[1])
-            self.MACDScorei = MACD.Score(MACD,self.closePrices,self.MACD_parameters[2])
+            MACDtemp = MACD.Value(self.closePrices,self.MACD_parameters[0],self.MACD_parameters[1])
+            self.MACDScorei = MACD.Score(MACDtemp,self.closePrices,self.MACD_parameters[2])
             self.MACDScoreiDict = dict(zip(self.dates[:len(self.MACDScorei)], self.MACDScorei))
             ## Generate values for Aroon
             AroonUp,AroonDown = Aroon.Value(self.closePrices,self.AroonParameters[0])
