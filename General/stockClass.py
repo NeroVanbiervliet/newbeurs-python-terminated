@@ -7,8 +7,10 @@ sys.path.insert(0, 'Indicators/GoogleTrend')
 import mainGoogleTrend as GoogleTrend
 sys.path.insert(0, 'Indicators/Aroon')
 import mainAroon as Aroon
-sys.path.insert(0, 'Indicators/BaertIndicator')
-import mainBaert as Baert
+#sys.path.insert(0, 'Indicators/BaertIndicator')
+#import mainBaert as Baert
+sys.path.insert(0, 'Indicators/OnBalanceVolume')
+import mainOBV as OBV
 import matplotlib.pyplot as plt
 
 class Stock:
@@ -20,7 +22,8 @@ class Stock:
         self.market = 'lol'
         self.category = []
         self.MACD_parameters = [12,26,9]
-        self.AroonParameters = [20]
+        self.AroonParameters = [25]
+        self.OBVParameters = [5,30]
         self.lengthLimit = 2000
         self.status = True
         
@@ -45,6 +48,22 @@ class Stock:
 ##        else:
 ##            print 'Data for ' + self.name + ' not available'
 
+    def generateStandard(self):
+        if os.path.isfile(self.dataPath):
+            dummy = np.loadtxt(self.dataPath, delimiter=',', skiprows=1, usecols=(1,2,3,4,5,6), unpack=False)
+            self.dates = np.loadtxt(self.dataPath, delimiter=',', skiprows=1, usecols=(0,), unpack=False,dtype = 'str')[:self.lengthLimit]
+            # Normal lists
+            # close price adjusted is used
+            self.closePrices = dummy[:,5][:self.lengthLimit]
+            self.volume = dummy[:,4][:self.lengthLimit]
+            # Dictionaries
+            self.closePricesDict = dict(zip(self.dates, dummy[:,5][:self.lengthLimit]))
+            self.volumeDict = dict(zip(self.dates, dummy[:,4][:self.lengthLimit]))
+            
+        else:
+            print 'Data for ' + self.name + ' not available'
+            self.status = False
+    
     def generateMACD(self):
         if os.path.isfile(self.dataPath):
             dummy = np.loadtxt(self.dataPath, delimiter=',', skiprows=1, usecols=(1,2,3,4,5,6), unpack=False)
@@ -113,17 +132,28 @@ class Stock:
             # close price adjusted is used
             self.closePrices = dummy[:,5][:self.lengthLimit]
             self.closePricesDict = dict(zip(self.dates, dummy[:,5][:self.lengthLimit]))
+            self.volume = dummy[:,4][:self.lengthLimit]
+            self.volumeDict = dict(zip(self.dates, dummy[:,4][:self.lengthLimit]))
+            
             ## Generate values for MACD
             MACDtemp = MACD.Value(self.closePrices,self.MACD_parameters[0],self.MACD_parameters[1])
             self.MACDScorei = MACD.Score(MACDtemp,self.closePrices,self.MACD_parameters[2])
             self.MACDScoreiDict = dict(zip(self.dates[:len(self.MACDScorei)], self.MACDScorei))
             ## Generate values for Aroon
             AroonUp,AroonDown = Aroon.Value(self.closePrices,self.AroonParameters[0])
-            self.AroonTiming = Aroon.Timing(AroonUp,AroonDown)
-            self.AroonTimingDict = dict(zip(self.dates[:len(self.AroonTiming)], self.AroonTiming))
+            self.AroonUp = AroonUp
+            self.AroonDown = AroonDown
+            self.AroonUpDict = dict(zip(self.dates[:len(self.AroonUp)], self.AroonUp))
+            self.AroonDownDict = dict(zip(self.dates[:len(self.AroonDown)], self.AroonDown)) 
+            #self.AroonTiming = Aroon.Timing(AroonUp,AroonDown)
+            #self.AroonTimingDict = dict(zip(self.dates[:len(self.AroonTiming)], self.AroonTiming))
             ## Generate Values for On Balance Volume
+            OBVList = OBV.Value(self.closePrices,self.volume)
+            self.OBVScore = OBV.Score(OBVList,self.OBVParameters[0],self.OBVParameters[1])
+            self.OBVScoreDict = dict(zip(self.dates[:len(self.OBVScore)], self.OBVScore))
+            
 
-            self.dates2 = self.dates[:len(self.AroonTiming)][:len(self.MACDScorei)]
+            self.dates2 = self.dates[:len(self.AroonTiming)][:len(self.MACDScorei)][:len(self.OBVScore)]
         else:
             print 'Data for ' + self.name + ' not available'
             self.status = False
